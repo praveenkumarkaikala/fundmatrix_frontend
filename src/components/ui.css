@@ -1,0 +1,61 @@
+/* Styles specific to the shared UI primitives in ui.jsx (Card, StatCard, Modal, PageLoader). */
+
+.card {
+  background: #fff; border: 1.5px solid var(--gray-100); border-radius: var(--radius);
+  box-shadow: var(--shadow-xs); padding: clamp(16px, 2.5vw, 22px); transition: box-shadow 0.2s, transform 0.2s;
+}
+.card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 10px; flex-wrap: wrap; }
+.card-head h3 { font-size: 16px; }
+.card-head .hint { color: var(--gray-400); font-size: 12.5px; }
+
+/* Stat tiles cycle through a bold accent palette by position, so a dashboard row of
+   stats reads as colorful/varied rather than one repeated tone. */
+.stat {
+  background: #fff; border: 1.5px solid var(--gray-100); border-radius: var(--radius);
+  padding: 18px 20px; box-shadow: var(--shadow-xs); position: relative; overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s; border-top: 4px solid var(--violet-600);
+}
+.stat:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+.stat .label { color: var(--gray-500); font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+.stat .value { font-size: 28px; font-weight: 850; color: var(--ink); margin-top: 8px; letter-spacing: -0.02em; }
+.stat .delta { font-size: 12.5px; margin-top: 6px; font-weight: 700; }
+.stat .ic {
+  position: absolute; right: 16px; top: 16px; width: 42px; height: 42px; border-radius: 13px;
+  display: grid; place-items: center; font-size: 19px; background: var(--violet-100); color: var(--violet-600);
+}
+.delta.up { color: var(--green-600); }
+.delta.down { color: var(--rose-600); }
+
+.grid.cols-2 .stat:nth-of-type(2), .grid.cols-3 .stat:nth-of-type(2), .grid.cols-4 .stat:nth-of-type(2) { border-top-color: var(--fuchsia-500); }
+.grid.cols-2 .stat:nth-of-type(2) .ic, .grid.cols-3 .stat:nth-of-type(2) .ic, .grid.cols-4 .stat:nth-of-type(2) .ic { background: var(--fuchsia-100); color: var(--fuchsia-600); }
+.grid.cols-3 .stat:nth-of-type(3), .grid.cols-4 .stat:nth-of-type(3) { border-top-color: var(--cyan-600); }
+.grid.cols-3 .stat:nth-of-type(3) .ic, .grid.cols-4 .stat:nth-of-type(3) .ic { background: var(--cyan-100); color: var(--cyan-600); }
+.grid.cols-4 .stat:nth-of-type(4) { border-top-color: var(--amber-600); }
+.grid.cols-4 .stat:nth-of-type(4) .ic { background: var(--amber-100); color: var(--amber-600); }
+
+/* ---------------- Modal ---------------- */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(23, 16, 42, 0.55); display: grid; place-items: center;
+  z-index: 100; padding: 20px; backdrop-filter: blur(3px);
+}
+.modal {
+  background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+  width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+}
+@media (max-width: 560px) {
+  .modal-backdrop { padding: 0; align-items: flex-end; }
+  .modal { max-width: 100%; max-height: 92vh; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+}
+.modal-head { padding: 20px 22px; border-bottom: 1.5px solid var(--gray-100); display: flex; justify-content: space-between; align-items: center; }
+.modal-head h3 { font-size: 17px; }
+.modal-head .x { cursor: pointer; color: var(--gray-400); font-size: 22px; line-height: 1; border: none; background: none; }
+.modal-body { padding: 22px; }
+.modal-foot { padding: 16px 22px; border-top: 1.5px solid var(--gray-100); display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+
+/* ---------------- Loader ---------------- */
+.loader { display: grid; place-items: center; min-height: 60vh; color: var(--gray-400); }
+.spinner {
+  width: 36px; height: 36px; border: 3px solid var(--gray-200); border-top-color: var(--fuchsia-500);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
