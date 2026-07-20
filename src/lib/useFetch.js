@@ -16,10 +16,13 @@ export function useFetch(url) {
     api
       .get(url)
       .then((r) => {
-        setData(r.data)
+        console.log(r?.data);
+        setData(r?.data)
         setError('')
       })
-      .catch((e) => setError(errorMessage(e)))
+      .catch((e) => {
+        console.log("error",e.response);
+        setError(errorMessage(e))})
       .finally(() => setLoading(false))
   }, [url])
 

@@ -13,9 +13,9 @@ export default function InvestorKycPage() {
   const { data, loading, reload } = useFetch('/kyc/mine')
   const [showSubmit, setShowSubmit] = useState(false)
 
-  const records = data ?? []
-  const isCompliant = records.some((r) => r.kycStatus === 'COMPLIANT')
-  const isPending = records.some((r) => r.kycStatus === 'PENDING')
+  const record = data ?data: null
+  const isCompliant = record?.kycStatus === 'COMPLIANT'
+  const isPending = record?.kycStatus==="PENDING"
 
   if (loading) return <PageLoader />
 
@@ -31,7 +31,7 @@ export default function InvestorKycPage() {
 
       {isCompliant && <div className="alert alert-success">Your KYC is verified and compliant.</div>}
       {!isCompliant && isPending && <div className="alert alert-warn">Your KYC has been submitted and is pending verification by the fund operator.</div>}
-      {records.length === 0 && <div className="alert alert-warn">You have not submitted any KYC yet. Submit your details to complete onboarding.</div>}
+      {record ===null && <div className="alert alert-warn">You have not submitted any KYC yet. Submit your details to complete onboarding.</div>}
 
       <Card title="My KYC Records" hint="Verification is performed by Fund Operations / Compliance">
         <div className="table-wrap">
@@ -40,16 +40,20 @@ export default function InvestorKycPage() {
               <tr><th>KYC Type</th><th>Document Type</th><th>Reference</th><th>Verified On</th><th>Status</th></tr>
             </thead>
             <tbody>
-              {records.length === 0 && <EmptyRow colSpan={5} text="No KYC submitted yet." />}
-              {records.map((r) => (
-                <tr key={r.id}>
-                  <td>{humanize(r.kycType)}</td>
-                  <td>{r.documentType ?? '—'}</td>
-                  <td>{r.documentRef ?? '—'}</td>
-                  <td>{date(r.verifiedDate)}</td>
-                  <td><StatusBadge status={r.kycStatus} /></td>
+              {record=== null && <EmptyRow colSpan={5} text="No KYC submitted yet." />}
+             {
+              record && (
+
+                <tr key={record.id}>
+                  <td>{humanize(record?.kycType)}</td>
+                  <td>{record?.documentType ?? '—'}</td>
+                  <td>{record?.documentRef ?? '—'}</td>
+                  <td>{date(record?.verifiedDate)}</td>
+                  <td><StatusBadge status={record?.kycStatus} /></td>
                 </tr>
-              ))}
+              )
+             }
+             
             </tbody>
           </table>
         </div>
@@ -66,12 +70,18 @@ function SubmitKycModal({ types, onClose, onDone }) {
   const [busy, setBusy] = useState(false)
 
   async function submit(e) {
-    e.preventDefault(); setBusy(true)
+    e.preventDefault(); 
+    setBusy(true)
     try {
       await api.post('/kyc', { kycType: form.kycType, documentType: form.documentType, documentRef: form.documentRef })
       toast.success('KYC submitted — pending verification')
-      onDone()
-    } catch (err) { toast.error(errorMessage(err)) } finally { setBusy(false) }
+     
+    } catch (err) { 
+      console.log(err.response);
+      toast.error(errorMessage(err)) } finally {  
+      setBusy(false)
+      onDone() }
+   
   }
 
   return (
