@@ -30,8 +30,8 @@ export default function TransactPage() {
 
   if (folios.loading || schemes.loading || kyc.loading) return <PageLoader />
 
-  const kycVerified = user?.role !== 'INVESTOR' || kyc.data.kycStatus === 'COMPLIANT'
-  if (!kycVerified) {
+  const kycVerified =( user?.role == 'INVESTOR' && kyc?.data?.kycStatus !== 'COMPLIANT') || false
+  if (kycVerified) {
     return (
       <>
         <div className="page-head">
