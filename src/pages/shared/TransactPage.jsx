@@ -30,7 +30,7 @@ export default function TransactPage() {
 
   if (folios.loading || schemes.loading || kyc.loading) return <PageLoader />
 
-  const kycVerified = user?.role !== 'INVESTOR' || (kyc.data ?? []).some((r) => r.kycStatus === 'COMPLIANT')
+  const kycVerified = user?.role !== 'INVESTOR' || kyc.data.kycStatus === 'COMPLIANT'
   if (!kycVerified) {
     return (
       <>
@@ -49,8 +49,32 @@ export default function TransactPage() {
     )
   }
 
-  const activeFolios = (folios.data ?? []).filter((f) => f.status === 'ACTIVE')
 
+
+  const activeFolios = (folios.data ?? []).filter((f) => f.status === 'ACTIVE')
+if(activeFolios.length==0)
+{
+   return (
+     <>
+  <div className="page-head">
+    <h1>Place a Transaction</h1>
+    <p>Subscriptions, redemptions and switches require an active folio.</p>
+  </div>
+
+  <Card title="No Folio Available">
+    <div className="alert alert-warn">
+      You do not have any active folios. To place subscriptions,
+      redemptions, or switches, you must first create a folio and
+      complete the required onboarding process.
+    </div>
+
+    <Link className="btn btn-primary" to="/folios">
+      Create a Folio
+    </Link>
+  </Card>
+</>
+    )
+}
   return (
     <>
       <div className="page-head">

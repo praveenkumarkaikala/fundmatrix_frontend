@@ -1,11 +1,12 @@
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { api, errorMessage } from '../../api/client'
 import { useFetch } from '../../lib/useFetch'
 import { useAuth } from '../../auth/AuthContext'
 import { useToast } from '../../components/Toast'
 import { Card, EmptyRow, Modal, PageLoader, StatusBadge } from '../../components/ui'
 import { humanize, inr, num, units } from '../../lib/format'
+import { Link } from 'react-router-dom'
 
 const TAX = ['INDIVIDUAL', 'HUF', 'CORPORATE', 'NRI', 'MINOR']
 const MODES = ['SINGLE', 'JOINT', 'ANYONE_OR_SURVIVOR']
@@ -16,9 +17,32 @@ export default function FoliosPage() {
   const { data, loading, error, reload } = useFetch('/folios')
   const [showCreate, setShowCreate] = useState(false)
   const [holdingsFor, setHoldingsFor] = useState(null)
-
+  const kyc = useFetch(user?.role === 'INVESTOR' ? '/kyc/mine' : null)
   const isStaff = user?.role === 'FUND_OPS' || user?.role === 'ADMIN'
   const canCreate = user && ['INVESTOR', 'DISTRIBUTOR', 'FUND_OPS', 'ADMIN'].includes(user.role)
+
+// useEffect(()=>{
+//   console.log("kyc",kyc);
+// },[kyc])
+
+const kycVerified = kyc?.data?.kycStatus !=="COMPLIANT"
+  if (kycVerified) {
+    return (
+      <>
+        <div className="page-head">
+          <h1>Place a Transaction</h1>
+          <p>Subscriptions, redemptions and switches require a verified KYC</p>
+        </div>
+        <Card title="KYC verification required">
+          <div className="alert alert-warn">
+            Your KYC is not yet verified. You can place subscriptions, redemptions and switches only
+            after your KYC has been verified (COMPLIANT) by the fund operator.
+          </div>
+          <Link className="btn btn-primary" to="/kyc">Go to KYC Verification</Link>
+        </Card>
+      </>
+    )
+  }
 
   async function changeStatus(f, status) {
     try {

@@ -16,7 +16,7 @@ export function useFetch(url) {
     api
       .get(url)
       .then((r) => {
-        console.log(r?.data);
+        console.log(url,": data",r?.data);
         setData(r?.data)
         setError('')
       })
