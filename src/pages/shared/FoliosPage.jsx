@@ -120,22 +120,99 @@ const kycVerified = kyc?.data?.kycStatus !=="COMPLIANT"
   )
 }
 
+
 function CreateFolioModal({ isStaff, onClose, onCreated }) {
   const toast = useToast()
-  const [form, setForm] = useState({ investorId: '', taxStatus: 'INDIVIDUAL', modeOfHolding: 'SINGLE', nomineeDetails: '', bankAccountRef: '' })
+
+  const [form, setForm] = useState({
+    investorId: '',
+    taxStatus: 'INDIVIDUAL',
+    modeOfHolding: 'SINGLE',
+    nomineeDetails: [
+      {
+        name: '',
+        percentage: '',
+      },
+    ],
+    bankAccountRef: '',
+  })
+
   const [busy, setBusy] = useState(false)
+
+  const addNominee = () => {
+    setForm((prev) => ({
+      ...prev,
+      nomineeDetails: [
+        ...prev.nomineeDetails,
+        {
+          name: '',
+          percentage: '',
+        },
+      ],
+    }))
+  }
+
+  const removeNominee = (index) => {
+    setForm((prev) => ({
+      ...prev,
+      nomineeDetails: prev.nomineeDetails.filter((_, i) => i !== index),
+    }))
+  }
+
+ const updateNominee = (index, field, value) => {
+  setForm((prev) => ({
+    ...prev,
+    nomineeDetails: prev.nomineeDetails.map((nominee, i) =>
+      i === index
+        ? {
+            ...nominee,
+            [field]: value,   
+          }
+        : nominee
+    ),
+  }))
+}
+
+  const totalPercentage = form.nomineeDetails.reduce(
+    (sum, nominee) => sum + Number(nominee.percentage || 0),
+    0
+  )
 
   async function submit(e) {
     e.preventDefault()
+
+    const hasInvalidNominee = form.nomineeDetails.some(
+      (nominee) =>
+        !nominee.name.trim() || Number(nominee.percentage) <= 0
+    )
+
+    if (hasInvalidNominee) {
+      toast.error('Please provide nominee name and percentage')
+      return
+    }
+
+    if (totalPercentage !== 100) {
+      toast.error('Nominee percentage must total 100%')
+      return
+    }
+
     setBusy(true)
+
     try {
       await api.post('/folios', {
-        investorId: isStaff && form.investorId ? Number(form.investorId) : undefined,
+        investorId:
+          isStaff && form.investorId
+            ? Number(form.investorId)
+            : undefined,
         taxStatus: form.taxStatus,
         modeOfHolding: form.modeOfHolding,
-        nomineeDetails: form.nomineeDetails || undefined,
+        nomineeDetails: form.nomineeDetails.map((nominee) => ({
+          name: nominee.name.trim(),
+          percentage: Number(nominee.percentage),
+        })),
         bankAccountRef: form.bankAccountRef || undefined,
       })
+
       toast.success('Folio created')
       onCreated()
     } catch (err) {
@@ -146,42 +223,178 @@ function CreateFolioModal({ isStaff, onClose, onCreated }) {
   }
 
   return (
-    <Modal title="Create Folio" onClose={onClose}
-      footer={<><button className="btn btn-ghost" onClick={onClose}>Cancel</button>
-        <button className="btn btn-primary" form="folio-form" disabled={busy}>{busy ? 'Saving…' : 'Create Folio'}</button></>}>
+    <Modal
+      title="Create Folio"
+      onClose={onClose}
+      footer={
+        <>
+          <button
+            type="button"
+            className="btn btn-ghost"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            form="folio-form"
+            className="btn btn-primary"
+            disabled={busy}
+          >
+            {busy ? 'Saving...' : 'Create Folio'}
+          </button>
+        </>
+      }
+    >
       <form id="folio-form" onSubmit={submit}>
         {isStaff && (
           <div className="field">
             <label>Investor ID</label>
-            <input type="number" value={form.investorId} onChange={(e) => setForm({ ...form, investorId: e.target.value })} required placeholder="e.g. 7" />
+            <input
+              type="number"
+              required
+              placeholder="e.g. 7"
+              value={form.investorId}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  investorId: e.target.value,
+                })
+              }
+            />
           </div>
         )}
+
         <div className="form-row">
           <div className="field">
             <label>Tax Status</label>
-            <select value={form.taxStatus} onChange={(e) => setForm({ ...form, taxStatus: e.target.value })}>
-              {TAX.map((t) => <option key={t} value={t}>{humanize(t)}</option>)}
+            <select
+              value={form.taxStatus}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  taxStatus: e.target.value,
+                })
+              }
+            >
+              {TAX.map((t) => (
+                <option key={t} value={t}>
+                  {humanize(t)}
+                </option>
+              ))}
             </select>
           </div>
+
           <div className="field">
             <label>Mode of Holding</label>
-            <select value={form.modeOfHolding} onChange={(e) => setForm({ ...form, modeOfHolding: e.target.value })}>
-              {MODES.map((m) => <option key={m} value={m}>{humanize(m)}</option>)}
+            <select
+              value={form.modeOfHolding}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  modeOfHolding: e.target.value,
+                })
+              }
+            >
+              {MODES.map((m) => (
+                <option key={m} value={m}>
+                  {humanize(m)}
+                </option>
+              ))}
             </select>
           </div>
         </div>
+
         <div className="field">
-          <label>Nominee Details</label>
-          <input value={form.nomineeDetails} onChange={(e) => setForm({ ...form, nomineeDetails: e.target.value })} placeholder="Name (Relationship) - %" />
+          <label>Nominees</label>
+
+          {form.nomineeDetails.map((nominee, index) => (
+            <div
+              key={index}
+              style={{
+                display: 'flex',
+                gap: '10px',
+                marginBottom: '10px',
+                alignItems: 'center',
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Nominee Name"
+                value={nominee.name}
+                onChange={(e) =>
+                  updateNominee(index, 'name', e.target.value)
+                }
+                style={{ flex: 2 }}
+              />
+
+              <input
+                type="number"
+                min="1"
+                max="100"
+                placeholder="%"
+                value={nominee.percentage}
+                onChange={(e) =>
+                  updateNominee(index, 'percentage', e.target.value)
+                }
+                style={{ width: '100px' }}
+              />
+
+              {form.nomineeDetails.length > 1 && (
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={() => removeNominee(index)}
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          ))}
+
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={addNominee}
+          >
+            + Add Nominee
+          </button>
+
+          <div
+            style={{
+              marginTop: '10px',
+              fontWeight: '600',
+              color:
+                totalPercentage === 100
+                  ? 'green'
+                  : totalPercentage > 100
+                  ? 'red'
+                  : '#666',
+            }}
+          >
+            Total Allocation: {totalPercentage}%
+          </div>
         </div>
+
         <div className="field">
           <label>Bank Account Reference</label>
-          <input value={form.bankAccountRef} onChange={(e) => setForm({ ...form, bankAccountRef: e.target.value })} placeholder="Bank - XXXX1234" />
+          <input
+            placeholder="Bank - XXXX1234"
+            value={form.bankAccountRef}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                bankAccountRef: e.target.value,
+              })
+            }
+          />
         </div>
       </form>
     </Modal>
   )
 }
+
 
 function HoldingsModal({ folio, onClose }) {
   const { data, loading } = useFetch(`/folios/${folio.id}/holdings`)
