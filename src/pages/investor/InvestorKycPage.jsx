@@ -7,7 +7,7 @@ import { Card, EmptyRow, Modal, PageLoader, StatusBadge } from '../../components
 import { date, humanize } from '../../lib/format'
 
 const TYPES = ['FULL', 'SIMPLIFIED', 'EKYC']
-
+const DOCUMENTS=["PAN", "Aadhaar", "Passport", "VoterID"]
 export default function InvestorKycPage() {
   const toast = useToast()
   const { data, loading, reload } = useFetch('/kyc/mine')
@@ -59,12 +59,12 @@ export default function InvestorKycPage() {
         </div>
       </Card>
 
-      {showSubmit && <SubmitKycModal types={TYPES} onClose={() => setShowSubmit(false)} onDone={() => { setShowSubmit(false); reload() }} />}
+      {showSubmit && <SubmitKycModal documentTypes={DOCUMENTS} types={TYPES} onClose={() => setShowSubmit(false)} onDone={() => { setShowSubmit(false); reload() }} />}
     </>
   )
 }
 
-function SubmitKycModal({ types, onClose, onDone }) {
+function SubmitKycModal({ documentTypes,types, onClose, onDone }) {
   const toast = useToast()
   const [form, setForm] = useState({ kycType: 'FULL', documentType: 'PAN', documentRef: '' })
   const [busy, setBusy] = useState(false)
@@ -97,7 +97,9 @@ function SubmitKycModal({ types, onClose, onDone }) {
         </div>
         <div className="field">
           <label>Document Type</label>
-          <input value={form.documentType} onChange={(e) => setForm({ ...form, documentType: e.target.value })} placeholder="PAN / Aadhaar / Passport" required />
+          <select value={form.documentType} onChange={(e) => setForm({ ...form, documentType: e.target.value })}>
+            {documentTypes.map((t) => <option key={t} value={t}>{humanize(t)}</option>)}
+          </select>
         </div>
         <div className="field">
           <label>Document Reference / Number</label>

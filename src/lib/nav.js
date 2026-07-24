@@ -20,13 +20,13 @@ export const ROLE_LABEL = {
 export const NAV = {
   INVESTOR: [
     { to: '/investor', label: 'Dashboard', icon: '◈' },
-    { to: '/folios', label: 'My Folios', icon: '▤' },
+    // { to: '/folios', label: 'My Folios', icon: '▤' },
     { to: '/kyc', label: 'KYC Verification', icon: '✓' },
     { to: '/transact', label: 'Transact', icon: '⇄' },
-    { to: '/sips', label: 'SIP Manager', icon: '↻' },
-    { to: '/swp', label: 'SWP Withdrawals', icon: '↺' },
-    { to: '/statement', label: 'Account Statement', icon: '≣' },
-    { to: '/dividends', label: 'Dividend History', icon: '₹' },
+    // { to: '/sips', label: 'SIP Manager', icon: '↻' },
+    // { to: '/swp', label: 'SWP Withdrawals', icon: '↺' },
+    // { to: '/statement', label: 'Account Statement', icon: '≣' },
+    // { to: '/dividends', label: 'Dividend History', icon: '₹' },
   ],
   DISTRIBUTOR: [
     { to: '/distributor', label: 'Dashboard', icon: '◈' },
