@@ -2,7 +2,7 @@
 export const HOME = {
   INVESTOR: '/investor',
   DISTRIBUTOR: '/distributor',
-  FUND_OPS: '/ops/queue',
+  FUND_OPS: '/ops/kyc',
   FUND_ACCOUNTANT: '/accountant/nav',
   COMPLIANCE: '/compliance',
   ADMIN: '/admin',
@@ -38,12 +38,12 @@ export const NAV = {
     { to: '/distributor/commissions', label: 'Trail Commission', icon: '₹' },
   ],
   FUND_OPS: [
-    { to: '/ops/queue', label: 'Transaction Queue', icon: '▦' },
-    { to: '/ops/allotments', label: 'Allotment Processing', icon: '◳' },
-    { to: '/folios', label: 'Folio Manager', icon: '▤' },
+    // { to: '/ops/queue', label: 'Transaction Queue', icon: '▦' },
+    // { to: '/ops/allotments', label: 'Allotment Processing', icon: '◳' },
+    // { to: '/folios', label: 'Folio Manager', icon: '▤' },
     { to: '/ops/kyc', label: 'KYC Verification', icon: '✓' },
-    { to: '/sips', label: 'SIP Processing', icon: '↻' },
-    { to: '/swp', label: 'SWP Processing', icon: '↺' },
+    // { to: '/sips', label: 'SIP Processing', icon: '↻' },
+    // { to: '/swp', label: 'SWP Processing', icon: '↺' },
   ],
   FUND_ACCOUNTANT: [
     { to: '/accountant/nav', label: 'NAV Entry', icon: '◧' },
@@ -54,8 +54,8 @@ export const NAV = {
   COMPLIANCE: [
     { to: '/compliance', label: 'Compliance Overview', icon: '◈' },
     { to: '/compliance/kyc', label: 'KYC Tracker', icon: '✓' },
-    { to: '/compliance/flags', label: 'Transaction Flags', icon: '⚑' },
-    { to: '/compliance/reports', label: 'Regulatory Reports', icon: '≣' },
+    // { to: '/compliance/flags', label: 'Transaction Flags', icon: '⚑' },
+    // { to: '/compliance/reports', label: 'Regulatory Reports', icon: '≣' },
   ],
   ADMIN: [
     { to: '/admin', label: 'Dashboard', icon: '◈' },

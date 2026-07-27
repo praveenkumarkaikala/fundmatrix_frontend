@@ -33,7 +33,7 @@ export default function InvestorKycPage() {
       {!isCompliant && isPending && <div className="alert alert-warn">Your KYC has been submitted and is pending verification by the fund operator.</div>}
       {record ===null && <div className="alert alert-warn">You have not submitted any KYC yet. Submit your details to complete onboarding.</div>}
 
-      <Card title="My KYC Records" hint="Verification is performed by Fund Operations / Compliance">
+      <Card title="My KYC Record" hint="Verification is performed by Fund Operations / Compliance">
         <div className="table-wrap">
           <table className="tbl">
             <thead>
