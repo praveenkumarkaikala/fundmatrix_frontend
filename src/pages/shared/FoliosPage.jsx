@@ -18,6 +18,7 @@ export default function FoliosPage() {
   const [showCreate, setShowCreate] = useState(false)
   const [holdingsFor, setHoldingsFor] = useState(null)
   const [transactionsFor, setTransactionFor] = useState(null)
+    const [nomineesFor, setNominnesFor] = useState(null)
   const kyc = useFetch(user?.role === 'INVESTOR' ? '/kyc/mine' : null)
   const isStaff = user?.role === 'FUND_OPS' || user?.role === 'ADMIN'
   const canCreate = user && ['INVESTOR', 'DISTRIBUTOR', 'FUND_OPS', 'ADMIN'].includes(user.role)
@@ -98,7 +99,8 @@ const kycVerified = (kyc?.data?.kycStatus !=="COMPLIANT" && user.role=="INVESTOR
                   <td>
                     <div className="btn-row">
                       <button className="btn btn-ghost btn-sm" onClick={() => setHoldingsFor(f)}>Holdings</button>
-                       <button className="btn btn-ghost btn-sm" onClick={() => setTransactionFor(f)}>Transactions</button>
+                      <button className="btn btn-ghost btn-sm" onClick={() => setTransactionFor(f)}>Transactions</button>
+                      <button className="btn btn-ghost btn-sm" onClick={() => setNominnesFor(f?.nomineeDetails)}>Nominee Details</button>
 
                       {isStaff && f.status !== 'ACTIVE' && (
                         <button className="btn btn-ghost btn-sm" onClick={() => changeStatus(f, 'ACTIVE')}>Activate</button>
@@ -119,7 +121,10 @@ const kycVerified = (kyc?.data?.kycStatus !=="COMPLIANT" && user.role=="INVESTOR
         <CreateFolioModal isStaff={!!isStaff} onClose={() => setShowCreate(false)} onCreated={() => { setShowCreate(false); reload() }} />
       )}
       {holdingsFor && <HoldingsModal folio={holdingsFor} onClose={() => setHoldingsFor(null)} />}
-        {transactionsFor && <TransactionModal folio={transactionsFor} onClose={() => setTransactionFor(null)} />}
+      {transactionsFor && <TransactionModal folio={transactionsFor} onClose={() => setTransactionFor(null)} />}
+      {nomineesFor && <AllocationModal data={nomineesFor} onClose={() => setNominnesFor(null)} />}
+      
+      
     </>
   )
 }
@@ -459,4 +464,34 @@ function TransactionModal({ folio, onClose }) {
       )}
     </Modal>
   )
+}
+
+
+function AllocationModal({ data, onClose }) {
+  return (
+    <Modal title="Allocation Details" onClose={onClose}>
+      <div className="table-wrap">
+        <table className="tbl">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th className="num">Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(!data || data.length === 0) && (
+              <EmptyRow colSpan={2} text="No allocation data found." />
+            )}
+
+            {data?.map((item, index) => (
+              <tr key={index}>
+                <td>{item.name}</td>
+                <td className="num">{item.percentage}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Modal>
+  );
 }

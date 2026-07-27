@@ -20,7 +20,7 @@ export const ROLE_LABEL = {
 export const NAV = {
   INVESTOR: [
     { to: '/investor', label: 'Dashboard', icon: '◈' },
-    // { to: '/folios', label: 'My Folios', icon: '▤' },
+    { to: '/folios', label: 'My Folios', icon: '▤' },
     { to: '/kyc', label: 'KYC Verification', icon: '✓' },
     { to: '/transact', label: 'Transact', icon: '⇄' },
     // { to: '/sips', label: 'SIP Manager', icon: '↻' },
@@ -39,8 +39,8 @@ export const NAV = {
   ],
   FUND_OPS: [
     // { to: '/ops/queue', label: 'Transaction Queue', icon: '▦' },
-    // { to: '/ops/allotments', label: 'Allotment Processing', icon: '◳' },
-    // { to: '/folios', label: 'Folio Manager', icon: '▤' },
+    { to: '/ops/allotments', label: 'Allotment Processing', icon: '◳' },
+    { to: '/folios', label: 'Folio Manager', icon: '▤' },
     { to: '/ops/kyc', label: 'KYC Verification', icon: '✓' },
     // { to: '/sips', label: 'SIP Processing', icon: '↻' },
     // { to: '/swp', label: 'SWP Processing', icon: '↺' },
