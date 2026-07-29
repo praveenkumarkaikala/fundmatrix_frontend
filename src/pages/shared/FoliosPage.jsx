@@ -32,8 +32,8 @@ const kycVerified = (kyc?.data?.kycStatus !=="COMPLIANT" && user.role=="INVESTOR
     return (
       <>
         <div className="page-head">
-          <h1>Place a Transaction</h1>
-          <p>Subscriptions, redemptions and switches require a verified KYC</p>
+        <h1>Create a Folio</h1>
+        <p>Create a new folio to start investing in mutual funds.</p>
         </div>
         <Card title="KYC verification required">
           <div className="alert alert-warn">
