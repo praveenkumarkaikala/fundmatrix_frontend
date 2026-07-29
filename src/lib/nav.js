@@ -47,7 +47,7 @@ export const NAV = {
   ],
   FUND_ACCOUNTANT: [
     { to: '/accountant/nav', label: 'NAV Entry', icon: '◧' },
-    // { to: '/accountant/aum', label: 'AUM Tracker', icon: '◈' },
+    { to: '/accountant/aum', label: 'AUM Tracker', icon: '◈' },
     // { to: '/accountant/accruals', label: 'Expense Accruals', icon: '≣' },
     // { to: '/accountant/dividends', label: 'Dividend Workspace', icon: '₹' },
   ],
