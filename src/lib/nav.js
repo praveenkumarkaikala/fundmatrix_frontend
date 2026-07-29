@@ -54,7 +54,7 @@ export const NAV = {
   COMPLIANCE: [
     { to: '/compliance', label: 'Compliance Overview', icon: '◈' },
     { to: '/compliance/kyc', label: 'KYC Tracker', icon: '✓' },
-    { to: '/compliance/flags', label: 'Transaction Flags', icon: '⚑' },
+    // { to: '/compliance/flags', label: 'Transaction Flags', icon: '⚑' },
     // { to: '/compliance/reports', label: 'Regulatory Reports', icon: '≣' },
   ],
   ADMIN: [
