@@ -51,7 +51,7 @@ export default function ReportsPage() {
 
   return (
     <>
-      <div className="page-head row-between">
+      <div className="page-head d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
           <h1>Regulatory Return Preparation</h1>
           <p>Generate a compliance summary and export it for regulatory filing</p>
@@ -66,7 +66,7 @@ export default function ReportsPage() {
           <Card title="Compliance Report"
             hint={`Generated ${datetime(report.generatedAt)} by ${report.generatedBy}`}
             action={
-              <div className="btn-row">
+              <div className="d-flex flex-wrap gap-2">
                 <button className="btn btn-ghost btn-sm" onClick={exportCsv}>Export CSV</button>
                 <button className="btn btn-ghost btn-sm" onClick={() => window.print()}>Print / PDF</button>
               </div>

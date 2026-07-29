@@ -53,7 +53,7 @@ export default function AllotmentPage() {
 
   return (
     <>
-      <div className="page-head row-between">
+      <div className="page-head d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
           <h1>Allotment Processing</h1>
           <p>Batch-process pending allotments against the published NAV; retry or reject failures</p>
@@ -71,8 +71,8 @@ export default function AllotmentPage() {
           </button>
         }
       >
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr>
                 <th style={{ width: 34 }}><input type="checkbox" checked={allChecked} onChange={toggleAll} style={{ width: 'auto' }} /></th>
@@ -95,7 +95,7 @@ export default function AllotmentPage() {
                   <td>{t.cutOffStatus ? <span className={`badge ${t.cutOffStatus === 'BEFORE_CUTOFF' ? 'green' : 'amber'}`}>{humanize(t.cutOffStatus)}</span> : '—'}</td>
                   <td><StatusBadge status={t.status} /></td>
                   <td>
-                    <div className="btn-row">
+                    <div className="d-flex flex-wrap gap-2">
                       <button className="btn btn-teal btn-sm" disabled={busy} onClick={() => allotBatch([t.id])}>Allot</button>
                       <button className="btn btn-danger btn-sm" disabled={busy} onClick={() => setRejecting(t)}>Reject</button>
                     </div>
@@ -108,11 +108,11 @@ export default function AllotmentPage() {
       </Card>
 
       {results && (
-        <div className="section-gap">
+        <div className="mt-4">
           <Card title="Last Batch Result" hint={`${results.filter((r) => r.success).length} allotted · ${failedResults.length} failed`}
             action={<button className="btn btn-ghost btn-sm" onClick={() => setResults(null)}>Clear</button>}>
-            <div className="table-wrap">
-              <table className="tbl">
+            <div className="table-responsive">
+              <table className="table">
                 <thead><tr><th>Reference</th><th>Outcome</th><th>Detail</th><th>Action</th></tr></thead>
                 <tbody>
                   {results.map((r) => (
@@ -153,9 +153,9 @@ function RejectModal({ txn, onClose, onDone }) {
     <Modal title={`Reject ${txn.transactionRef}`} onClose={onClose}
       footer={<><button className="btn btn-ghost" onClick={onClose}>Cancel</button>
         <button className="btn btn-danger" disabled={busy || !reason.trim()} onClick={submit}>Reject</button></>}>
-      <div className="field">
-        <label>Rejection Reason</label>
-        <textarea rows={3} value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. KYC not compliant" />
+      <div className="mb-3">
+        <label className="form-label">Rejection Reason</label>
+        <textarea className="form-control" rows={3} value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. KYC not compliant" />
       </div>
     </Modal>
   )

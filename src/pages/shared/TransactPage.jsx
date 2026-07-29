@@ -39,7 +39,7 @@ export default function TransactPage() {
           <p>Subscriptions, redemptions and switches require a verified KYC</p>
         </div>
         <Card title="KYC verification required">
-          <div className="alert alert-warn">
+          <div className="alert alert-warning">
             Your KYC is not yet verified. You can place subscriptions, redemptions and switches only
             after your KYC has been verified (COMPLIANT) by the fund operator.
           </div>
@@ -62,7 +62,7 @@ if(activeFolios.length==0)
   </div>
 
   <Card title="No Folio Available">
-    <div className="alert alert-warn">
+    <div className="alert alert-warning">
       You do not have any active folios. To place subscriptions,
       redemptions, or switches, you must first create a folio and
       complete the required onboarding process.
@@ -112,9 +112,9 @@ if(activeFolios.length==0)
 
 function FolioSelect({ folios, value, onChange }) {
   return (
-    <div className="field">
-      <label>Folio</label>
-      <select value={value} onChange={(e) => onChange(e.target.value)} required>
+    <div className="mb-3">
+      <label className="form-label">Folio</label>
+      <select className="form-select" value={value} onChange={(e) => onChange(e.target.value)} required>
         <option value="">Select a folio…</option>
         {folios.map((f) => <option key={f.id} value={f.id}>{f.folioNumber} — {f.investorName}</option>)}
       </select>
@@ -124,9 +124,9 @@ function FolioSelect({ folios, value, onChange }) {
 
 function OptionSelect({ options, value, onChange, label }) {
   return (
-    <div className="field">
-      <label>{label}</label>
-      <select value={value} onChange={(e) => onChange(e.target.value)} required>
+    <div className="mb-3">
+      <label className="form-label">{label}</label>
+      <select className="form-select" value={value} onChange={(e) => onChange(e.target.value)} required>
         <option value="">Select a scheme option…</option>
         {options.map((o) => <option key={o.optionId} value={o.optionId}>{o.label}{o.nav ? ` (NAV ${num(o.nav, 4)})` : ''}</option>)}
       </select>
@@ -153,9 +153,9 @@ function SubscribeForm({ folios, options, onDone, onError }) {
     <form onSubmit={submit}>
       <FolioSelect folios={folios} value={folioId} onChange={setFolioId} />
       <OptionSelect options={options} value={optionId} onChange={setOptionId} label="Scheme Option" />
-      <div className="field">
-        <label>Amount (₹)</label>
-        <input type="number" min="1" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required placeholder="e.g. 25000" />
+      <div className="mb-3">
+        <label className="form-label">Amount (₹)</label>
+        <input className="form-control" type="number" min="1" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required placeholder="e.g. 25000" />
       </div>
       <button className="btn btn-primary btn-block" disabled={busy}>{busy ? 'Submitting…' : 'Submit Subscription'}</button>
     </form>
@@ -185,9 +185,9 @@ function RedeemForm({ folios, options, onDone, onError }) {
     <form onSubmit={submit}>
       <FolioSelect folios={folios} value={folioId} onChange={setFolioId} />
       <OptionSelect options={options} value={optionId} onChange={setOptionId} label="Scheme Option" />
-      <div className="field">
-        <label>Units to redeem</label>
-        <input type="number" min="0.0001" step="0.0001" value={unitsVal} onChange={(e) => setUnitsVal(e.target.value)} disabled={redeemAll} required={!redeemAll} />
+      <div className="mb-3">
+        <label className="form-label">Units to redeem</label>
+        <input className="form-control" type="number" min="0.0001" step="0.0001" value={unitsVal} onChange={(e) => setUnitsVal(e.target.value)} disabled={redeemAll} required={!redeemAll} />
       </div>
       <label style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 13.5, marginBottom: 14 }}>
         <input type="checkbox" checked={redeemAll} onChange={(e) => setRedeemAll(e.target.checked)} style={{ width: 'auto' }} /> Redeem entire holding
@@ -222,9 +222,9 @@ function SwitchForm({ folios, options, onDone, onError }) {
       <FolioSelect folios={folios} value={folioId} onChange={setFolioId} />
       <OptionSelect options={options} value={fromOptionId} onChange={setFrom} label="Switch From" />
       <OptionSelect options={options} value={toOptionId} onChange={setTo} label="Switch To" />
-      <div className="field">
-        <label>Units to switch</label>
-        <input type="number" min="0.0001" step="0.0001" value={unitsVal} onChange={(e) => setUnitsVal(e.target.value)} disabled={switchAll} required={!switchAll} />
+      <div className="mb-3">
+        <label className="form-label">Units to switch</label>
+        <input className="form-control" type="number" min="0.0001" step="0.0001" value={unitsVal} onChange={(e) => setUnitsVal(e.target.value)} disabled={switchAll} required={!switchAll} />
       </div>
       <label style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 13.5, marginBottom: 14 }}>
         <input type="checkbox" checked={switchAll} onChange={(e) => setSwitchAll(e.target.checked)} style={{ width: 'auto' }} /> Switch entire holding

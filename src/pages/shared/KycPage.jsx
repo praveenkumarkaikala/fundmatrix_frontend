@@ -41,8 +41,8 @@ export default function KycPage() {
 
       <Card hint="Pending records are awaiting your verification">
         {loading ? <PageLoader /> : (
-          <div className="table-wrap">
-            <table className="tbl">
+          <div className="table-responsive">
+            <table className="table">
               <thead>
                 <tr><th>Investor</th><th>KYC Type</th><th>Document</th><th>Reference</th><th>Verified</th><th>Status</th><th>Actions</th></tr>
               </thead>
@@ -57,7 +57,7 @@ export default function KycPage() {
                     <td>{date(r.verifiedDate)}</td>
                     <td><StatusBadge status={r.kycStatus} /></td>
                     <td>
-                      <div className="btn-row">
+                      <div className="d-flex flex-wrap gap-2">
                         {r.kycStatus !== 'COMPLIANT' && <button className="btn btn-teal btn-sm" onClick={() => setStatus(r, 'COMPLIANT')}>Approve</button>}
                         {r.kycStatus !== 'NON_COMPLIANT' && <button className="btn btn-danger btn-sm" onClick={() => setStatus(r, 'NON_COMPLIANT')}>Reject</button>}
                       </div>

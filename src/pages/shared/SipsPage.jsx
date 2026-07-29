@@ -25,7 +25,7 @@ export default function SipsPage() {
 
   return (
     <>
-      <div className="page-head row-between">
+      <div className="page-head d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
           <h1>{isOps ? 'SIP Processing' : 'SIP Manager'}</h1>
           <p>Recurring systematic investment mandates</p>
@@ -34,8 +34,8 @@ export default function SipsPage() {
       </div>
 
       <Card>
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr>
                 <th>Mandate</th><th>Folio</th><th>Scheme</th><th className="num">Amount</th>
@@ -55,7 +55,7 @@ export default function SipsPage() {
                   <td>{date(s.nextInstalmentDate)}</td>
                   <td><StatusBadge status={s.status} /></td>
                   <td>
-                    <div className="btn-row">
+                    <div className="d-flex flex-wrap gap-2">
                       {isOps && s.status === 'ACTIVE' && <button className="btn btn-teal btn-sm" onClick={() => act(s.id, 'run', `Instalment run for ${s.mandateRef}`)}>Run</button>}
                       {s.status === 'ACTIVE' && <button className="btn btn-ghost btn-sm" onClick={() => act(s.id, 'pause', 'SIP paused')}>Pause</button>}
                       {s.status === 'PAUSED' && <button className="btn btn-ghost btn-sm" onClick={() => act(s.id, 'resume', 'SIP resumed')}>Resume</button>}
@@ -105,41 +105,41 @@ function CreateSipModal({ onClose, onCreated }) {
       footer={<><button className="btn btn-ghost" onClick={onClose}>Cancel</button>
         <button className="btn btn-primary" form="sip-form" disabled={busy}>{busy ? 'Saving…' : 'Create SIP'}</button></>}>
       <form id="sip-form" onSubmit={submit}>
-        <div className="field">
-          <label>Folio</label>
-          <select value={form.folioId} onChange={(e) => setForm({ ...form, folioId: e.target.value })} required>
+        <div className="mb-3">
+          <label className="form-label">Folio</label>
+          <select className="form-select" value={form.folioId} onChange={(e) => setForm({ ...form, folioId: e.target.value })} required>
             <option value="">Select…</option>
             {(folios.data ?? []).filter((f) => f.status === 'ACTIVE').map((f) => <option key={f.id} value={f.id}>{f.folioNumber} — {f.investorName}</option>)}
           </select>
         </div>
-        <div className="field">
-          <label>Scheme Option</label>
-          <select value={form.optionId} onChange={(e) => setForm({ ...form, optionId: e.target.value })} required>
+        <div className="mb-3">
+          <label className="form-label">Scheme Option</label>
+          <select className="form-select" value={form.optionId} onChange={(e) => setForm({ ...form, optionId: e.target.value })} required>
             <option value="">Select…</option>
             {options.map((o) => <option key={o.id} value={o.id}>{o.label}{o.nav ? ` (NAV ${num(o.nav, 4)})` : ''}</option>)}
           </select>
         </div>
         <div className="form-row">
-          <div className="field">
-            <label>Amount (₹)</label>
-            <input type="number" min="1" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} required />
+          <div className="mb-3">
+            <label className="form-label">Amount (₹)</label>
+            <input className="form-control" type="number" min="1" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} required />
           </div>
-          <div className="field">
-            <label>Frequency</label>
-            <select value={form.frequency} onChange={(e) => setForm({ ...form, frequency: e.target.value })}>
+          <div className="mb-3">
+            <label className="form-label">Frequency</label>
+            <select className="form-select" value={form.frequency} onChange={(e) => setForm({ ...form, frequency: e.target.value })}>
               <option value="MONTHLY">Monthly</option>
               <option value="QUARTERLY">Quarterly</option>
             </select>
           </div>
         </div>
         <div className="form-row">
-          <div className="field">
-            <label>Start Date</label>
-            <input type="date" value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })} required />
+          <div className="mb-3">
+            <label className="form-label">Start Date</label>
+            <input className="form-control" type="date" value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })} required />
           </div>
-          <div className="field">
-            <label>Instalments</label>
-            <input type="number" min="1" value={form.instalmentCount} onChange={(e) => setForm({ ...form, instalmentCount: e.target.value })} placeholder="e.g. 12" />
+          <div className="mb-3">
+            <label className="form-label">Instalments</label>
+            <input className="form-control" type="number" min="1" value={form.instalmentCount} onChange={(e) => setForm({ ...form, instalmentCount: e.target.value })} placeholder="e.g. 12" />
           </div>
         </div>
       </form>

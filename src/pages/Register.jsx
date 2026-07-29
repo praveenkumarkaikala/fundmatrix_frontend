@@ -46,24 +46,24 @@ export default function Register() {
           <h2>Create your account</h2>
           <div className="sub">Investor self-registration</div>
 
-          {error && <div className="alert alert-error">{error}</div>}
+          {error && <div className="alert alert-danger">{error}</div>}
 
           <form onSubmit={submit}>
-            <div className="field">
-              <label>Full name</label>
-              <input value={form.name} onChange={set('name')} required />
+            <div className="mb-3">
+              <label className="form-label">Full name</label>
+              <input className="form-control" value={form.name} onChange={set('name')} required />
             </div>
-            <div className="field">
-              <label>Email</label>
-              <input type="email" value={form.email} onChange={set('email')} required />
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input className="form-control" type="email" value={form.email} onChange={set('email')} required />
             </div>
-            <div className="field">
-              <label>Phone</label>
-              <input value={form.phone} onChange={set('phone')} />
+            <div className="mb-3">
+              <label className="form-label">Phone</label>
+              <input className="form-control" value={form.phone} onChange={set('phone')} />
             </div>
-            <div className="field">
-              <label>Password</label>
-              <input type="password" value={form.password} onChange={set('password')}
+            <div className="mb-3">
+              <label className="form-label">Password</label>
+              <input className="form-control" type="password" value={form.password} onChange={set('password')}
                 minLength={6} required />
             </div>
             <button className="btn btn-primary btn-block" disabled={busy}>

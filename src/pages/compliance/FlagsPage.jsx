@@ -39,8 +39,8 @@ export default function FlagsPage() {
 
       <Card hint={`${data?.length ?? 0} flag(s)`}>
         {loading ? <PageLoader /> : (
-          <div className="table-wrap">
-            <table className="tbl">
+          <div className="table-responsive">
+            <table className="table">
               <thead>
                 <tr><th>Reference</th><th>Folio</th><th>Scheme</th><th className="num">Amount</th><th>Reason</th><th>Raised</th><th>Status</th><th>Actions</th></tr>
               </thead>
@@ -56,7 +56,7 @@ export default function FlagsPage() {
                     <td>{datetime(f.createdDate)}</td>
                     <td><StatusBadge status={f.status} /></td>
                     <td>
-                      <div className="btn-row">
+                      <div className="d-flex flex-wrap gap-2">
                         {nextStates(f.status).map(([target, label, cls]) => (
                           <button key={target} className={`btn ${cls} btn-sm`} onClick={() => setActing({ flag: f, target })}>{label}</button>
                         ))}
@@ -94,9 +94,9 @@ function ReviewModal({ flag, target, onClose, onDone }) {
         <button className="btn btn-primary" disabled={busy} onClick={submit}>{busy ? 'Saving…' : `Mark ${humanize(target)}`}</button></>}>
       <div className="kv"><span className="k">Amount</span><span className="v">{inr(flag.amount)}</span></div>
       <div className="kv"><span className="k">Reason</span><span className="v">{flag.reason}</span></div>
-      <div className="field" style={{ marginTop: 10 }}>
-        <label>Review note {target === 'ESCALATED' ? '(recommended)' : '(optional)'}</label>
-        <textarea rows={3} value={note} onChange={(e) => setNote(e.target.value)} placeholder="Reviewer comments…" />
+      <div className="mb-3" style={{ marginTop: 10 }}>
+        <label className="form-label">Review note {target === 'ESCALATED' ? '(recommended)' : '(optional)'}</label>
+        <textarea className="form-control" rows={3} value={note} onChange={(e) => setNote(e.target.value)} placeholder="Reviewer comments…" />
       </div>
     </Modal>
   )

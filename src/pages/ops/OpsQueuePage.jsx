@@ -23,7 +23,7 @@ export default function OpsQueuePage() {
 
   return (
     <>
-      <div className="page-head row-between">
+      <div className="page-head d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
           <h1>Transaction Queue</h1>
           <p>Review, accept and allot pending subscriptions and redemptions</p>
@@ -32,8 +32,8 @@ export default function OpsQueuePage() {
       </div>
 
       <Card hint={`${data?.length ?? 0} item(s) awaiting processing`}>
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr>
                 <th>Reference</th><th>Received</th><th>Folio</th><th>Scheme</th><th>Type</th>
@@ -54,7 +54,7 @@ export default function OpsQueuePage() {
                   <td>{t.cutOffStatus ? <span className={`badge ${t.cutOffStatus === 'BEFORE_CUTOFF' ? 'green' : 'amber'}`}>{humanize(t.cutOffStatus)}</span> : '—'}</td>
                   <td><StatusBadge status={t.status} /></td>
                   <td>
-                    <div className="btn-row">
+                    <div className="d-flex flex-wrap gap-2">
                       {t.status === 'RECEIVED' && <button className="btn btn-ghost btn-sm" disabled={busyId === t.id} onClick={() => act(t, 'accept', `${t.transactionRef} accepted`)}>Accept</button>}
                       {(t.status === 'RECEIVED' || t.status === 'ACCEPTED') && <button className="btn btn-teal btn-sm" disabled={busyId === t.id} onClick={() => act(t, 'allot', `${t.transactionRef} allotted`)}>Allot</button>}
                       <button className="btn btn-danger btn-sm" disabled={busyId === t.id} onClick={() => setRejecting(t)}>Reject</button>
@@ -87,9 +87,9 @@ function RejectModal({ txn, onClose, onDone }) {
     <Modal title={`Reject ${txn.transactionRef}`} onClose={onClose}
       footer={<><button className="btn btn-ghost" onClick={onClose}>Cancel</button>
         <button className="btn btn-danger" disabled={busy || !reason.trim()} onClick={submit}>Reject Transaction</button></>}>
-      <div className="field">
-        <label>Rejection Reason</label>
-        <textarea rows={3} value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. KYC not compliant, insufficient documents" />
+      <div className="mb-3">
+        <label className="form-label">Rejection Reason</label>
+        <textarea className="form-control" rows={3} value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. KYC not compliant, insufficient documents" />
       </div>
     </Modal>
   )

@@ -48,21 +48,21 @@ export default function NavPage() {
       <div className="grid cols-2">
         <Card title="Capture NAV">
           <form onSubmit={save}>
-            <div className="field">
-              <label>Scheme Option</label>
-              <select value={optionId} onChange={(e) => setOptionId(e.target.value)} required>
+            <div className="mb-3">
+              <label className="form-label">Scheme Option</label>
+              <select className="form-select" value={optionId} onChange={(e) => setOptionId(e.target.value)} required>
                 <option value="">Select…</option>
                 {options.map((o) => <option key={o.id} value={o.id}>{o.label}{o.nav ? ` (NAV ${num(o.nav, 4)})` : ''}</option>)}
               </select>
             </div>
             <div className="form-row">
-              <div className="field">
-                <label>NAV Date</label>
-                <input type="date" value={navDate} onChange={(e) => setNavDate(e.target.value)} required />
+              <div className="mb-3">
+                <label className="form-label">NAV Date</label>
+                <input className="form-control" type="date" value={navDate} onChange={(e) => setNavDate(e.target.value)} required />
               </div>
-              <div className="field">
-                <label>NAV Value (₹)</label>
-                <input type="number" min="0.0001" step="0.0001" value={navValue} onChange={(e) => setNavValue(e.target.value)} required />
+              <div className="mb-3">
+                <label className="form-label">NAV Value (₹)</label>
+                <input className="form-control" type="number" min="0.0001" step="0.0001" value={navValue} onChange={(e) => setNavValue(e.target.value)} required />
               </div>
             </div>
             <button className="btn btn-primary btn-block" disabled={busy || !optionId}>{busy ? 'Saving…' : 'Capture NAV'}</button>
@@ -71,8 +71,8 @@ export default function NavPage() {
 
         <Card title="NAV History" hint={optionId ? 'Latest first' : 'Select an option to view history'}>
           {!optionId ? <div className="empty">No option selected</div> : history.loading ? <PageLoader /> : (
-            <div className="table-wrap">
-              <table className="tbl">
+            <div className="table-responsive">
+              <table className="table">
                 <thead>
                   <tr><th>Date</th><th className="num">NAV</th><th className="num">AUM</th><th>Status</th><th>Action</th></tr>
                 </thead>

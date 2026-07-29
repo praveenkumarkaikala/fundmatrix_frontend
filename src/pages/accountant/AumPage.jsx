@@ -6,7 +6,7 @@ import { humanize, inr, num, units } from '../../lib/format'
 export default function AumPage() {
   const { data, loading, error } = useFetch('/nav/aum-summary')
   if (loading) return <PageLoader />
-  if (error) return <div className="alert alert-error">{error}</div>
+  if (error) return <div className="alert alert-danger">{error}</div>
 
   const rows = data ?? []
   const total = rows.reduce((s, r) => s + (r.totalAum ?? 0), 0)
@@ -25,10 +25,10 @@ export default function AumPage() {
         <StatCard label="Avg AUM / Scheme" value={inr(rows.length ? total / rows.length : 0)} icon="◈" />
       </div>
 
-      <div className="section-gap">
+      <div className="mt-4">
         <Card title="Scheme-wise AUM">
-          <div className="table-wrap">
-            <table className="tbl">
+          <div className="table-responsive">
+            <table className="table">
               <thead>
                 <tr><th>Scheme</th><th>Code</th><th>Category</th><th className="num">Latest NAV</th><th className="num">Units O/S</th><th className="num">AUM</th><th>Share</th></tr>
               </thead>

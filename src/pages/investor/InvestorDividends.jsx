@@ -16,11 +16,11 @@ export default function InvestorDividends() {
         <p>Your dividend entitlements, tax deducted and payout mode</p>
       </div>
 
-      {error && <div className="alert alert-error">{error}</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
 
       <Card title="Entitlements" hint={`Total net received: ${inr(totalNet)}`}>
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr>
                 <th>Folio</th><th className="num">Units on Record Date</th><th className="num">Gross</th>
