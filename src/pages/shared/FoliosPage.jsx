@@ -17,6 +17,8 @@ export default function FoliosPage() {
   const { data, loading, error, reload } = useFetch('/folios')
   const [showCreate, setShowCreate] = useState(false)
   const [holdingsFor, setHoldingsFor] = useState(null)
+  const [transactionsFor, setTransactionFor] = useState(null)
+    const [nomineesFor, setNominnesFor] = useState(null)
   const kyc = useFetch(user?.role === 'INVESTOR' ? '/kyc/mine' : null)
   const isStaff = user?.role === 'FUND_OPS' || user?.role === 'ADMIN'
   const canCreate = user && ['INVESTOR', 'DISTRIBUTOR', 'FUND_OPS', 'ADMIN'].includes(user.role)
@@ -25,7 +27,7 @@ export default function FoliosPage() {
 //   console.log("kyc",kyc);
 // },[kyc])
 
-const kycVerified = kyc?.data?.kycStatus !=="COMPLIANT"
+const kycVerified = (kyc?.data?.kycStatus !=="COMPLIANT" && user.role=="INVESTOR") || false
   if (kycVerified) {
     return (
       <>
@@ -97,6 +99,9 @@ const kycVerified = kyc?.data?.kycStatus !=="COMPLIANT"
                   <td>
                     <div className="btn-row">
                       <button className="btn btn-ghost btn-sm" onClick={() => setHoldingsFor(f)}>Holdings</button>
+                      <button className="btn btn-ghost btn-sm" onClick={() => setTransactionFor(f)}>Transactions</button>
+                      <button className="btn btn-ghost btn-sm" onClick={() => setNominnesFor(f?.nomineeDetails)}>Nominee Details</button>
+
                       {isStaff && f.status !== 'ACTIVE' && (
                         <button className="btn btn-ghost btn-sm" onClick={() => changeStatus(f, 'ACTIVE')}>Activate</button>
                       )}
@@ -116,6 +121,10 @@ const kycVerified = kyc?.data?.kycStatus !=="COMPLIANT"
         <CreateFolioModal isStaff={!!isStaff} onClose={() => setShowCreate(false)} onCreated={() => { setShowCreate(false); reload() }} />
       )}
       {holdingsFor && <HoldingsModal folio={holdingsFor} onClose={() => setHoldingsFor(null)} />}
+      {transactionsFor && <TransactionModal folio={transactionsFor} onClose={() => setTransactionFor(null)} />}
+      {nomineesFor && <AllocationModal data={nomineesFor} onClose={() => setNominnesFor(null)} />}
+      
+      
     </>
   )
 }
@@ -423,4 +432,66 @@ function HoldingsModal({ folio, onClose }) {
       )}
     </Modal>
   )
+}
+
+
+
+function TransactionModal({ folio, onClose }) {
+  const { data, loading } = useFetch(`/transactions/folio/${folio.id}`)
+  return (
+    <Modal title={`Transactions · ${folio.folioNumber}`} onClose={onClose}>
+      {loading ? <PageLoader /> : (
+        <div className="table-wrap">
+          <table className="tbl">
+            <thead>
+              <tr><th>TXN Ref</th><th>Scheme</th><th>Option</th><th className="num">Units</th><th className="num">Value</th><th className="num">Status</th></tr>
+            </thead>
+            <tbody>
+              {(!data || data.length === 0) && <EmptyRow colSpan={5} text="No holdings in this folio." />}
+              {data?.map((h) => (
+                <tr key={h.id}>
+                  <td>{h.transactionRef}</td>
+                  <td>{h.schemeName}</td>
+                  <td>{humanize(h.optionType)}</td>
+                  <td className="num">{units(h.units)}</td>
+                  <td className="num">{inr(h.amount)}</td>
+                  <td className="num" style={{ color: h.status  =="ALLOTTED" ? 'var(--green-500)' : 'var(--rose-500)' }}>{h.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </Modal>
+  )
+}
+
+
+function AllocationModal({ data, onClose }) {
+  return (
+    <Modal title="Allocation Details" onClose={onClose}>
+      <div className="table-wrap">
+        <table className="tbl">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th className="num">Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(!data || data.length === 0) && (
+              <EmptyRow colSpan={2} text="No allocation data found." />
+            )}
+
+            {data?.map((item, index) => (
+              <tr key={index}>
+                <td>{item.name}</td>
+                <td className="num">{item.percentage}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Modal>
+  );
 }

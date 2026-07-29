@@ -53,6 +53,12 @@
   --grad-warm: linear-gradient(135deg, var(--amber-600), var(--fuchsia-500));
   --grad-rail: linear-gradient(165deg, var(--violet-900) 0%, #7e1a8a 55%, var(--fuchsia-600) 100%);
 
+
+  /* --grad-primary: #7c3aed; 
+--grad-cool: #2563eb;    
+--grad-warm: #d97706;   
+--grad-rail: #581c87;     */
+
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
   color: var(--gray-700);
   background: var(--gray-50);
