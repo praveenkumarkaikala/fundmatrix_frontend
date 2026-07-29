@@ -60,8 +60,7 @@ export const NAV = {
   ADMIN: [
     { to: '/admin', label: 'Dashboard', icon: '◈' },
     { to: '/admin/schemes', label: 'Scheme Catalogue', icon: '▤' },
-    { to: '/admin/distributors', label: 'Distributors', icon: '◧' },
-    { to: '/admin/users', label: 'User Management', icon: '✓' },
-    { to: '/admin/roles', label: 'Roles & Permissions', icon: '⚿' },
+    // { to: '/admin/distributors', label: 'Distributors', icon: '◧' },
+    // { to: '/admin/users', label: 'User Management', icon: '✓' }
   ],
 }

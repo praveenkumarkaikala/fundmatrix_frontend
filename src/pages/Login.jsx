@@ -5,7 +5,7 @@ import { errorMessage } from '../api/client'
 import './Login.css'
 
 const DEMO = [
-  { label: 'Admin', email: 'admin@fundmatrix.io' },
+  { label: 'Admin', email: 'admin1@fundmatrix.test' },
   { label: 'Investor', email: 'ravi@example.com' },
   { label: 'Distributor', email: 'arnold@wealthbridge.io' },
   { label: 'Fund Ops', email: 'ops@fundmatrix.io' },
