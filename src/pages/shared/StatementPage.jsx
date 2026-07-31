@@ -24,7 +24,7 @@ export default function StatementPage() {
         <p>Complete transaction history with allotment details</p>
       </div>
 
-      {error && <div className="alert alert-error">{error}</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
 
       <div className="pill-filter">
         {FILTERS.map((f) => (
@@ -35,8 +35,8 @@ export default function StatementPage() {
       </div>
 
       <Card>
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr>
                 <th>Reference</th><th>Date</th><th>Scheme</th><th>Type</th>

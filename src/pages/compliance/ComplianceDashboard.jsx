@@ -7,7 +7,7 @@ import { datetime, humanize, inr } from '../../lib/format'
 export default function ComplianceDashboard() {
   const { data, loading, error } = useFetch('/dashboard/compliance')
   if (loading) return <PageLoader />
-  if (error) return <div className="alert alert-error">{error}</div>
+  if (error) return <div className="alert alert-danger">{error}</div>
   const d = data
 
   return (
@@ -24,11 +24,11 @@ export default function ComplianceDashboard() {
         <StatCard label="Expired" value={d.expiredCount} icon="⊗" />
       </div>
 
-      <div className="section-gap">
+      <div className="mt-4">
         <Card title="Flagged Transactions" hint={`${d.flaggedTransactionCount} high-value transaction(s) ≥ ₹10,00,000`}
           action={<Link className="btn btn-ghost btn-sm" to="/compliance/kyc">KYC Tracker</Link>}>
-          <div className="table-wrap">
-            <table className="tbl">
+          <div className="table-responsive">
+            <table className="table">
               <thead>
                 <tr><th>Reference</th><th>Date</th><th>Folio</th><th>Scheme</th><th>Type</th><th className="num">Amount</th><th>Status</th></tr>
               </thead>

@@ -1,6 +1,7 @@
 /* Styles specific to the shared UI primitives in ui.jsx (Card, StatCard, Modal, PageLoader). */
 
 .card {
+  display: block; /* neutralize Bootstrap's .card flex-column base */
   background: #fff; border: 1.5px solid var(--gray-100); border-radius: var(--radius);
   box-shadow: var(--shadow-xs); padding: clamp(16px, 2.5vw, 22px); transition: box-shadow 0.2s, transform 0.2s;
 }
@@ -39,6 +40,10 @@
   z-index: 100; padding: 20px; backdrop-filter: blur(3px);
 }
 .modal {
+  /* Reset Bootstrap's .modal base (position:fixed; display:none; top/left:0;
+     height:100%) — this is the centered dialog box inside .modal-backdrop's
+     grid, not a full-screen Bootstrap modal. */
+  position: static; display: block; top: auto; left: auto; height: auto; z-index: auto; overflow-x: visible;
   background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
   width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
 }

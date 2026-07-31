@@ -8,7 +8,7 @@ export default function DistributorDashboard() {
   const dash = useFetch('/dashboard/distributor')
   const folios = useFetch('/folios')
   if (dash.loading) return <PageLoader />
-  if (dash.error) return <div className="alert alert-error">{dash.error}</div>
+  if (dash.error) return <div className="alert alert-danger">{dash.error}</div>
   const d = dash.data
 
   return (
@@ -25,11 +25,11 @@ export default function DistributorDashboard() {
         <StatCard label="Commission Pending" value={inr(d.commissionPending)} icon="↻" />
       </div>
 
-      <div className="section-gap">
+      <div className="mt-4">
         <Card title="Client Folios" hint={`${folios.data?.length ?? 0} folios serviced`}
           action={<Link className="btn btn-ghost btn-sm" to="/distributor/commissions">View Commissions</Link>}>
-          <div className="table-wrap">
-            <table className="tbl">
+          <div className="table-responsive">
+            <table className="table">
               <thead>
                 <tr><th>Folio</th><th>Investor</th><th>Tax Status</th><th className="num">Current Value</th><th>Status</th></tr>
               </thead>

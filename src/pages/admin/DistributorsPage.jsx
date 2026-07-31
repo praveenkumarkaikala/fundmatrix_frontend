@@ -19,7 +19,7 @@ export default function DistributorsPage() {
 
   return (
     <>
-      <div className="page-head row-between">
+      <div className="page-head d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
           <h1>Distributors</h1>
           <p>Empanelment records and trail commission management</p>
@@ -28,8 +28,8 @@ export default function DistributorsPage() {
       </div>
 
       <Card>
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr><th>Name</th><th>ARN</th><th>EUIN</th><th>Model</th><th>Empanelled</th><th className="num">AUM Managed</th><th>Status</th><th></th></tr>
             </thead>
@@ -45,7 +45,7 @@ export default function DistributorsPage() {
                   <td className="num">{inr(d.aumManaged)}</td>
                   <td><StatusBadge status={d.status} /></td>
                   <td>
-                    <div className="btn-row">
+                    <div className="d-flex flex-wrap gap-2">
                       <button className="btn btn-ghost btn-sm" onClick={() => setEditing(d)}>Edit</button>
                       <button className="btn btn-ghost btn-sm" onClick={() => setCommissionsFor(d)}>Commissions</button>
                     </div>
@@ -88,16 +88,16 @@ function EditDistributorModal({ distributor, onClose, onDone }) {
       footer={<><button className="btn btn-ghost" onClick={onClose}>Cancel</button>
         <button className="btn btn-primary" form="dist-edit" disabled={busy}>{busy ? 'Saving…' : 'Save'}</button></>}>
       <form id="dist-edit" onSubmit={submit}>
-        <div className="field"><label>Name</label><input value={f.name} onChange={set('name')} required /></div>
+        <div className="mb-3"><label className="form-label">Name</label><input className="form-control" value={f.name} onChange={set('name')} required /></div>
         <div className="form-row">
-          <div className="field"><label>ARN Number</label><input value={f.arnNumber} onChange={set('arnNumber')} /></div>
-          <div className="field"><label>EUIN Number</label><input value={f.euinNumber} onChange={set('euinNumber')} /></div>
+          <div className="mb-3"><label className="form-label">ARN Number</label><input className="form-control" value={f.arnNumber} onChange={set('arnNumber')} /></div>
+          <div className="mb-3"><label className="form-label">EUIN Number</label><input className="form-control" value={f.euinNumber} onChange={set('euinNumber')} /></div>
         </div>
         <div className="form-row">
-          <div className="field"><label>Commission Model</label><select value={f.commissionModel} onChange={set('commissionModel')}>{MODELS.map((m) => <option key={m} value={m}>{humanize(m)}</option>)}</select></div>
-          <div className="field"><label>Status (lifecycle)</label><select value={f.status} onChange={set('status')}>{DIST_STATUS.map((s) => <option key={s} value={s}>{humanize(s)}</option>)}</select></div>
+          <div className="mb-3"><label className="form-label">Commission Model</label><select className="form-select" value={f.commissionModel} onChange={set('commissionModel')}>{MODELS.map((m) => <option key={m} value={m}>{humanize(m)}</option>)}</select></div>
+          <div className="mb-3"><label className="form-label">Status (lifecycle)</label><select className="form-select" value={f.status} onChange={set('status')}>{DIST_STATUS.map((s) => <option key={s} value={s}>{humanize(s)}</option>)}</select></div>
         </div>
-        <div className="field"><label>Empanelment Date</label><input type="date" value={f.empanelmentDate} onChange={set('empanelmentDate')} /></div>
+        <div className="mb-3"><label className="form-label">Empanelment Date</label><input className="form-control" type="date" value={f.empanelmentDate} onChange={set('empanelmentDate')} /></div>
       </form>
     </Modal>
   )
@@ -126,18 +126,18 @@ function DistributorModal({ onClose, onDone }) {
       footer={<><button className="btn btn-ghost" onClick={onClose}>Cancel</button>
         <button className="btn btn-primary" form="dist-form" disabled={busy}>{busy ? 'Saving…' : 'Empanel'}</button></>}>
       <form id="dist-form" onSubmit={submit}>
-        <div className="field"><label>Name</label><input value={f.name} onChange={set('name')} required /></div>
+        <div className="mb-3"><label className="form-label">Name</label><input className="form-control" value={f.name} onChange={set('name')} required /></div>
         <div className="form-row">
-          <div className="field"><label>ARN Number</label><input value={f.arnNumber} onChange={set('arnNumber')} /></div>
-          <div className="field"><label>EUIN Number</label><input value={f.euinNumber} onChange={set('euinNumber')} /></div>
+          <div className="mb-3"><label className="form-label">ARN Number</label><input className="form-control" value={f.arnNumber} onChange={set('arnNumber')} /></div>
+          <div className="mb-3"><label className="form-label">EUIN Number</label><input className="form-control" value={f.euinNumber} onChange={set('euinNumber')} /></div>
         </div>
         <div className="form-row">
-          <div className="field"><label>Empanelment Date</label><input type="date" value={f.empanelmentDate} onChange={set('empanelmentDate')} /></div>
-          <div className="field"><label>Commission Model</label><select value={f.commissionModel} onChange={set('commissionModel')}>{MODELS.map((m) => <option key={m} value={m}>{humanize(m)}</option>)}</select></div>
+          <div className="mb-3"><label className="form-label">Empanelment Date</label><input className="form-control" type="date" value={f.empanelmentDate} onChange={set('empanelmentDate')} /></div>
+          <div className="mb-3"><label className="form-label">Commission Model</label><select className="form-select" value={f.commissionModel} onChange={set('commissionModel')}>{MODELS.map((m) => <option key={m} value={m}>{humanize(m)}</option>)}</select></div>
         </div>
         <div className="form-row">
-          <div className="field"><label>Status</label><select value={f.status} onChange={set('status')}>{DIST_STATUS.map((s) => <option key={s} value={s}>{humanize(s)}</option>)}</select></div>
-          <div className="field"><label>Linked User ID (optional)</label><input type="number" value={f.userId} onChange={set('userId')} placeholder="DISTRIBUTOR user id" /></div>
+          <div className="mb-3"><label className="form-label">Status</label><select className="form-select" value={f.status} onChange={set('status')}>{DIST_STATUS.map((s) => <option key={s} value={s}>{humanize(s)}</option>)}</select></div>
+          <div className="mb-3"><label className="form-label">Linked User ID (optional)</label><input className="form-control" type="number" value={f.userId} onChange={set('userId')} placeholder="DISTRIBUTOR user id" /></div>
         </div>
       </form>
     </Modal>
@@ -166,28 +166,28 @@ function CommissionsModal({ distributor, onClose }) {
 
   return (
     <Modal title={`Trail Commission · ${distributor.name}`} onClose={onClose}>
-      <form className="row-between" onSubmit={compute} style={{ alignItems: 'flex-end', gap: 10, marginBottom: 16 }}>
-        <div className="field" style={{ flex: 1, marginBottom: 0 }}>
-          <label>Scheme</label>
-          <select value={form.schemeId} onChange={(e) => setForm({ ...form, schemeId: e.target.value })} required>
+      <form className="d-flex justify-content-between align-items-center flex-wrap gap-3" onSubmit={compute} style={{ alignItems: 'flex-end', gap: 10, marginBottom: 16 }}>
+        <div className="mb-3" style={{ flex: 1, marginBottom: 0 }}>
+          <label className="form-label">Scheme</label>
+          <select className="form-select" value={form.schemeId} onChange={(e) => setForm({ ...form, schemeId: e.target.value })} required>
             <option value="">Select…</option>
             {schemes.data?.map((s) => <option key={s.id} value={s.id}>{s.schemeName}</option>)}
           </select>
         </div>
-        <div className="field" style={{ width: 120, marginBottom: 0 }}>
-          <label>Period</label>
-          <input type="month" value={form.period} onChange={(e) => setForm({ ...form, period: e.target.value })} required />
+        <div className="mb-3" style={{ width: 120, marginBottom: 0 }}>
+          <label className="form-label">Period</label>
+          <input className="form-control" type="month" value={form.period} onChange={(e) => setForm({ ...form, period: e.target.value })} required />
         </div>
-        <div className="field" style={{ width: 100, marginBottom: 0 }}>
-          <label>Rate %</label>
-          <input type="number" step="0.0001" value={form.trailRate} onChange={(e) => setForm({ ...form, trailRate: e.target.value })} required />
+        <div className="mb-3" style={{ width: 100, marginBottom: 0 }}>
+          <label className="form-label">Rate %</label>
+          <input className="form-control" type="number" step="0.0001" value={form.trailRate} onChange={(e) => setForm({ ...form, trailRate: e.target.value })} required />
         </div>
         <button className="btn btn-primary" disabled={busy}>Compute</button>
       </form>
 
       {list.loading ? <PageLoader /> : (
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead><tr><th>Period</th><th>Scheme</th><th className="num">Commission</th><th>Status</th><th>Action</th></tr></thead>
             <tbody>
               {(!list.data || list.data.length === 0) && <EmptyRow colSpan={5} text="No commissions yet." />}

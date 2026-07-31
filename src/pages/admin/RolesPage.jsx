@@ -20,7 +20,7 @@ export default function RolesPage() {
 
   return (
     <>
-      <div className="page-head row-between">
+      <div className="page-head d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
           <h1>Roles &amp; Permissions</h1>
           <p>Define roles and the permissions they grant. Access is enforced live from these grants.</p>
@@ -30,8 +30,8 @@ export default function RolesPage() {
 
       <Card title="Roles" hint="System roles cannot be renamed or deleted. The ADMIN role always holds every permission.">
         {roles.loading ? <PageLoader /> : (
-          <div className="table-wrap">
-            <table className="tbl">
+          <div className="table-responsive">
+            <table className="table">
               <thead><tr><th>Role</th><th>Description</th><th>Type</th><th>Permissions</th><th>Actions</th></tr></thead>
               <tbody>
                 {(!roles.data || roles.data.length === 0) && <EmptyRow colSpan={5} />}
@@ -42,7 +42,7 @@ export default function RolesPage() {
                     <td>{r.system ? <Badge color="blue">System</Badge> : <Badge color="teal">Custom</Badge>}</td>
                     <td><Badge color="gray">{r.permissions.length} permission{r.permissions.length === 1 ? '' : 's'}</Badge></td>
                     <td>
-                      <div className="btn-row">
+                      <div className="d-flex flex-wrap gap-2">
                         <button className="btn btn-ghost btn-sm" onClick={() => setEditing(r)}>Edit</button>
                         {!r.system && <button className="btn btn-danger btn-sm" onClick={() => remove(r)}>Delete</button>}
                       </div>
@@ -55,7 +55,7 @@ export default function RolesPage() {
         )}
       </Card>
 
-      <div className="section-gap"><AssignPanel roles={roles.data || []} /></div>
+      <div className="mt-4"><AssignPanel roles={roles.data || []} /></div>
 
       {editing && (
         <RoleModal
@@ -117,19 +117,19 @@ function RoleModal({ role, permissions, onClose, onDone }) {
         <button className="btn btn-primary" form="role-form" disabled={busy}>{busy ? 'Saving…' : (isNew ? 'Create Role' : 'Save Changes')}</button></>}>
       <form id="role-form" onSubmit={submit}>
         <div className="form-row">
-          <div className="field">
-            <label>Role Name</label>
-            <input value={name} onChange={(e) => setName(e.target.value)} required disabled={isSystem}
+          <div className="mb-3">
+            <label className="form-label">Role Name</label>
+            <input className="form-control" value={name} onChange={(e) => setName(e.target.value)} required disabled={isSystem}
               placeholder="e.g. ANALYST" />
             {isSystem && <div className="hint">System role — name is fixed.</div>}
           </div>
-          <div className="field">
-            <label>Description</label>
-            <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Optional" />
+          <div className="mb-3">
+            <label className="form-label">Description</label>
+            <input className="form-control" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Optional" />
           </div>
         </div>
 
-        <div className="field">
+        <div className="mb-3">
           <label>Permissions</label>
           {isAdmin ? (
             <div className="hint">The ADMIN role always holds all {permissions.length} permissions and cannot be edited.</div>
@@ -191,9 +191,9 @@ function AssignPanel({ roles }) {
 
   return (
     <Card title="Assign Roles to a User" hint="A user's effective permissions are the union of all roles assigned to them.">
-      <div className="field" style={{ maxWidth: 420 }}>
-        <label>User</label>
-        <select value={userId} onChange={(e) => pick(e.target.value)}>
+      <div className="mb-3" style={{ maxWidth: 420 }}>
+        <label className="form-label">User</label>
+        <select className="form-select" value={userId} onChange={(e) => pick(e.target.value)}>
           <option value="">Select a user…</option>
           {users.data?.map((u) => <option key={u.id} value={u.id}>{u.name} — {u.email} ({humanize(u.role)})</option>)}
         </select>
@@ -201,7 +201,7 @@ function AssignPanel({ roles }) {
 
       {current && (
         <>
-          <div className="field">
+          <div className="mb-3">
             <label>Roles</label>
             <div className="chip-row">
               {roles.map((r) => (
@@ -213,7 +213,7 @@ function AssignPanel({ roles }) {
             </div>
           </div>
 
-          <div className="field">
+          <div className="mb-3">
             <label>Effective Permissions ({current.permissions.length})</label>
             <div className="chip-row">
               {current.permissions.length === 0 && <span className="muted-sm">No permissions — user cannot access protected endpoints.</span>}

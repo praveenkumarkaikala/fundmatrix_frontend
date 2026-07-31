@@ -21,7 +21,7 @@ export default function AccountantDividends() {
 
   return (
     <>
-      <div className="page-head row-between">
+      <div className="page-head d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
           <h1>Dividend Workspace</h1>
           <p>Declare dividends, compute investor entitlements and process payouts</p>
@@ -30,8 +30,8 @@ export default function AccountantDividends() {
       </div>
 
       <Card>
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr>
                 <th>Scheme</th><th>Option</th><th>Record Date</th><th className="num">₹/Unit</th>
@@ -50,7 +50,7 @@ export default function AccountantDividends() {
                   <td className="num">{d.entitlementCount}</td>
                   <td><StatusBadge status={d.status} /></td>
                   <td>
-                    <div className="btn-row">
+                    <div className="d-flex flex-wrap gap-2">
                       {(d.status === 'DECLARED' || d.status === 'APPROVED') && <button className="btn btn-ghost btn-sm" onClick={() => act(d.id, 'compute', 'Entitlements computed')}>Compute</button>}
                       {d.status === 'DECLARED' && <button className="btn btn-ghost btn-sm" onClick={() => act(d.id, 'approve', 'Dividend approved')}>Approve</button>}
                       {d.status === 'APPROVED' && <button className="btn btn-teal btn-sm" onClick={() => act(d.id, 'process', 'Dividend processed')}>Process</button>}
@@ -97,21 +97,21 @@ function DeclareModal({ onClose, onDone }) {
       footer={<><button className="btn btn-ghost" onClick={onClose}>Cancel</button>
         <button className="btn btn-primary" form="div-form" disabled={busy}>{busy ? 'Saving…' : 'Declare'}</button></>}>
       <form id="div-form" onSubmit={submit}>
-        <div className="field">
-          <label>Scheme Option (dividend-bearing)</label>
-          <select value={form.optionId} onChange={(e) => setForm({ ...form, optionId: e.target.value })} required>
+        <div className="mb-3">
+          <label className="form-label">Scheme Option (dividend-bearing)</label>
+          <select className="form-select" value={form.optionId} onChange={(e) => setForm({ ...form, optionId: e.target.value })} required>
             <option value="">Select…</option>
             {options.map((o) => <option key={o.id} value={o.id}>{o.label}{o.nav ? ` (NAV ${num(o.nav, 4)})` : ''}</option>)}
           </select>
         </div>
         <div className="form-row">
-          <div className="field">
-            <label>Record Date</label>
-            <input type="date" value={form.recordDate} onChange={(e) => setForm({ ...form, recordDate: e.target.value })} required />
+          <div className="mb-3">
+            <label className="form-label">Record Date</label>
+            <input className="form-control" type="date" value={form.recordDate} onChange={(e) => setForm({ ...form, recordDate: e.target.value })} required />
           </div>
-          <div className="field">
-            <label>Dividend / Unit (₹)</label>
-            <input type="number" step="0.0001" min="0.0001" value={form.dividendPerUnit} onChange={(e) => setForm({ ...form, dividendPerUnit: e.target.value })} required />
+          <div className="mb-3">
+            <label className="form-label">Dividend / Unit (₹)</label>
+            <input className="form-control" type="number" step="0.0001" min="0.0001" value={form.dividendPerUnit} onChange={(e) => setForm({ ...form, dividendPerUnit: e.target.value })} required />
           </div>
         </div>
       </form>
@@ -124,8 +124,8 @@ function EntitlementsModal({ declaration, onClose }) {
   return (
     <Modal title={`Entitlements · ${declaration.schemeName}`} onClose={onClose}>
       {loading ? <PageLoader /> : (
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr><th>Folio</th><th>Investor</th><th className="num">Units</th><th className="num">Gross</th><th className="num">Tax</th><th className="num">Net</th><th>Status</th></tr>
             </thead>

@@ -8,7 +8,7 @@ export default function AdminDashboard() {
   const stats = useFetch('/dashboard/admin')
   const aum = useFetch('/nav/aum-summary')
   if (stats.loading) return <PageLoader />
-  if (stats.error) return <div className="alert alert-error">{stats.error}</div>
+  if (stats.error) return <div className="alert alert-danger">{stats.error}</div>
   const s = stats.data
 
   return (
@@ -24,17 +24,17 @@ export default function AdminDashboard() {
         <StatCard label="Investor Folios" value={s.totalFolios} icon="◧" />
         <StatCard label="Pending Transactions" value={s.pendingTransactions} icon="▦" />
       </div>
-      <div className="grid cols-3 section-gap">
+      <div className="grid cols-3 mt-4">
         <StatCard label="Total Users" value={s.totalUsers} icon="✓" />
         <StatCard label="Distributors" value={s.totalDistributors} icon="◈" />
         <StatCard label="Schemes" value={s.totalSchemes} icon="↻" />
       </div>
 
-      <div className="section-gap">
+      <div className="mt-4">
         <Card title="Assets Under Management" hint="By scheme"
           action={<Link className="btn btn-ghost btn-sm" to="/admin/schemes">Manage Catalogue</Link>}>
-          <div className="table-wrap">
-            <table className="tbl">
+          <div className="table-responsive">
+            <table className="table">
               <thead>
                 <tr><th>Scheme</th><th>Category</th><th className="num">Latest NAV</th><th className="num">AUM</th></tr>
               </thead>

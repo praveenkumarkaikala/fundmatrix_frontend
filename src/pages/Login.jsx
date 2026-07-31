@@ -60,17 +60,17 @@ export default function Login() {
           <h2>Welcome back</h2>
           <div className="sub">Sign in to your FundMatrix workspace</div>
 
-          {error && <div className="alert alert-error">{error}</div>}
+          {error && <div className="alert alert-danger">{error}</div>}
 
           <form onSubmit={submit}>
-            <div className="field">
-              <label>Email</label>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input className="form-control" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com" required />
             </div>
-            <div className="field">
-              <label>Password</label>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+            <div className="mb-3">
+              <label className="form-label">Password</label>
+              <input className="form-control" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••" required />
             </div>
             <button className="btn btn-primary btn-block" disabled={busy}>

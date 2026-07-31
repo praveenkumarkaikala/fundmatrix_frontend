@@ -23,7 +23,7 @@ export default function UsersPage() {
 
   return (
     <>
-      <div className="page-head row-between">
+      <div className="page-head d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
           <h1>User Management</h1>
           <p>Provision staff, distributor and investor accounts</p>
@@ -37,8 +37,8 @@ export default function UsersPage() {
 
       <Card>
         {loading ? <PageLoader /> : (
-          <div className="table-wrap">
-            <table className="tbl">
+          <div className="table-responsive">
+            <table className="table">
               <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Created</th><th>Status</th><th>Actions</th></tr></thead>
               <tbody>
                 {(!data || data.length === 0) && <EmptyRow colSpan={7} />}
@@ -51,7 +51,7 @@ export default function UsersPage() {
                     <td>{date(u.createdAt)}</td>
                     <td><StatusBadge status={u.status} /></td>
                     <td>
-                      <div className="btn-row">
+                      <div className="d-flex flex-wrap gap-2">
                         {u.status !== 'ACTIVE' && <button className="btn btn-teal btn-sm" onClick={() => setStatus(u, 'ACTIVE')}>Activate</button>}
                         {u.status === 'ACTIVE' && <button className="btn btn-danger btn-sm" onClick={() => setStatus(u, 'SUSPENDED')}>Suspend</button>}
                       </div>
@@ -85,14 +85,14 @@ function CreateUserModal({ onClose, onDone }) {
       footer={<><button className="btn btn-ghost" onClick={onClose}>Cancel</button>
         <button className="btn btn-primary" form="user-form" disabled={busy}>{busy ? 'Saving…' : 'Create User'}</button></>}>
       <form id="user-form" onSubmit={submit}>
-        <div className="field"><label>Full Name</label><input value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} required /></div>
+        <div className="mb-3"><label className="form-label">Full Name</label><input className="form-control" value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} required /></div>
         <div className="form-row">
-          <div className="field"><label>Email</label><input type="email" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} required /></div>
-          <div className="field"><label>Phone</label><input value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} /></div>
+          <div className="mb-3"><label className="form-label">Email</label><input className="form-control" type="email" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} required /></div>
+          <div className="mb-3"><label className="form-label">Phone</label><input className="form-control" value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} /></div>
         </div>
         <div className="form-row">
-          <div className="field"><label>Role</label><select value={f.role} onChange={(e) => setF({ ...f, role: e.target.value })}>{ROLES.map((r) => <option key={r} value={r}>{humanize(r)}</option>)}</select></div>
-          <div className="field"><label>Password</label><input type="password" minLength={6} value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} required /></div>
+          <div className="mb-3"><label className="form-label">Role</label><select className="form-select" value={f.role} onChange={(e) => setF({ ...f, role: e.target.value })}>{ROLES.map((r) => <option key={r} value={r}>{humanize(r)}</option>)}</select></div>
+          <div className="mb-3"><label className="form-label">Password</label><input className="form-control" type="password" minLength={6} value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} required /></div>
         </div>
       </form>
     </Modal>

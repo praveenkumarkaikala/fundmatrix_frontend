@@ -22,7 +22,7 @@ export default function SchemesPage() {
 
   return (
     <>
-      <div className="page-head row-between">
+      <div className="page-head d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
           <h1>Scheme Catalogue</h1>
           <p>Build and configure fund schemes, fee structures and plan options</p>
@@ -31,8 +31,8 @@ export default function SchemesPage() {
       </div>
 
       <Card>
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr>
                 <th>Scheme</th><th>Code</th><th>Category</th><th>Risk</th>
@@ -53,7 +53,7 @@ export default function SchemesPage() {
                     <td><button className="btn btn-ghost btn-sm" onClick={() => setExpanded(expanded === s.id ? null : s.id)}>{s.options.length} ▾</button></td>
                     <td><StatusBadge status={s.status} /></td>
                     <td>
-                      <div className="btn-row">
+                      <div className="d-flex flex-wrap gap-2">
                         <button className="btn btn-ghost btn-sm" onClick={() => setConfigFor(s)}>Config</button>
                         <button className="btn btn-ghost btn-sm" onClick={() => setAddOptionFor(s)}>+ Option</button>
                       </div>
@@ -62,7 +62,7 @@ export default function SchemesPage() {
                   {expanded === s.id && (
                     <tr>
                       <td colSpan={9} style={{ background: 'var(--slate-50)' }}>
-                        <table className="tbl" style={{ background: 'transparent' }}>
+                        <table className="table" style={{ background: 'transparent' }}>
                           <thead><tr><th>Option</th><th>ISIN</th><th className="num">Latest NAV</th><th>Status</th></tr></thead>
                           <tbody>
                             {s.options.length === 0 && <EmptyRow colSpan={4} text="No options yet." />}
@@ -128,23 +128,23 @@ function ConfigSchemeModal({ scheme, onClose, onDone }) {
         <button className="btn btn-primary" form="config-form" disabled={busy}>{busy ? 'Saving…' : 'Save Config'}</button></>}>
       <form id="config-form" onSubmit={submit}>
         <div className="form-row">
-          <div className="field"><label>Min Investment (₹)</label><input type="number" value={f.minInvestment} onChange={set('minInvestment')} /></div>
-          <div className="field"><label>Expense Ratio / TER (%)</label><input type="number" step="0.0001" value={f.expenseRatio} onChange={set('expenseRatio')} /></div>
+          <div className="mb-3"><label className="form-label">Min Investment (₹)</label><input className="form-control" type="number" value={f.minInvestment} onChange={set('minInvestment')} /></div>
+          <div className="mb-3"><label className="form-label">Expense Ratio / TER (%)</label><input className="form-control" type="number" step="0.0001" value={f.expenseRatio} onChange={set('expenseRatio')} /></div>
         </div>
         <div className="hint" style={{ margin: '8px 0 4px', fontWeight: 600 }}>SIP / SWP rules</div>
         <div className="form-row">
-          <div className="field"><label>Min SIP Amount (₹)</label><input type="number" value={f.minSipAmount} onChange={set('minSipAmount')} placeholder="e.g. 1000" /></div>
-          <div className="field"><label>Min SWP Amount (₹)</label><input type="number" value={f.minSwpAmount} onChange={set('minSwpAmount')} placeholder="e.g. 1000" /></div>
+          <div className="mb-3"><label className="form-label">Min SIP Amount (₹)</label><input className="form-control" type="number" value={f.minSipAmount} onChange={set('minSipAmount')} placeholder="e.g. 1000" /></div>
+          <div className="mb-3"><label className="form-label">Min SWP Amount (₹)</label><input className="form-control" type="number" value={f.minSwpAmount} onChange={set('minSwpAmount')} placeholder="e.g. 1000" /></div>
         </div>
         <div className="hint" style={{ margin: '8px 0 4px', fontWeight: 600 }}>Cut-off & exit load</div>
         <div className="form-row">
-          <div className="field"><label>Cut-off Time (HH:mm)</label><input value={f.cutoffTime} onChange={set('cutoffTime')} placeholder="15:00 (blank = category default)" /></div>
-          <div className="field"><label>Status</label><select value={f.status} onChange={set('status')}>{SCHEME_STATUS.map((x) => <option key={x} value={x}>{humanize(x)}</option>)}</select></div>
+          <div className="mb-3"><label className="form-label">Cut-off Time (HH:mm)</label><input className="form-control" value={f.cutoffTime} onChange={set('cutoffTime')} placeholder="15:00 (blank = category default)" /></div>
+          <div className="mb-3"><label className="form-label">Status</label><select className="form-select" value={f.status} onChange={set('status')}>{SCHEME_STATUS.map((x) => <option key={x} value={x}>{humanize(x)}</option>)}</select></div>
         </div>
-        <div className="field"><label>Exit Load Slab</label><input value={f.exitLoadSlab} onChange={set('exitLoadSlab')} placeholder="1% if redeemed within 365 days" /></div>
+        <div className="mb-3"><label className="form-label">Exit Load Slab</label><input className="form-control" value={f.exitLoadSlab} onChange={set('exitLoadSlab')} placeholder="1% if redeemed within 365 days" /></div>
         <div className="form-row">
-          <div className="field"><label>Exit Load Rate (%)</label><input type="number" step="0.0001" value={f.exitLoadRate} onChange={set('exitLoadRate')} /></div>
-          <div className="field"><label>Exit Load Period (days)</label><input type="number" value={f.exitLoadPeriodDays} onChange={set('exitLoadPeriodDays')} /></div>
+          <div className="mb-3"><label className="form-label">Exit Load Rate (%)</label><input className="form-control" type="number" step="0.0001" value={f.exitLoadRate} onChange={set('exitLoadRate')} /></div>
+          <div className="mb-3"><label className="form-label">Exit Load Period (days)</label><input className="form-control" type="number" value={f.exitLoadPeriodDays} onChange={set('exitLoadPeriodDays')} /></div>
         </div>
       </form>
     </Modal>
@@ -183,27 +183,27 @@ function SchemeModal({ onClose, onDone }) {
       footer={<><button className="btn btn-ghost" onClick={onClose}>Cancel</button>
         <button className="btn btn-primary" form="scheme-form" disabled={busy}>{busy ? 'Saving…' : 'Create Scheme'}</button></>}>
       <form id="scheme-form" onSubmit={submit}>
-        <div className="field"><label>Scheme Name</label><input value={f.schemeName} onChange={set('schemeName')} required /></div>
+        <div className="mb-3"><label className="form-label">Scheme Name</label><input className="form-control" value={f.schemeName} onChange={set('schemeName')} required /></div>
         <div className="form-row">
-          <div className="field"><label>Scheme Code</label><input value={f.schemeCode} onChange={set('schemeCode')} required /></div>
-          <div className="field"><label>Status</label><select value={f.status} onChange={set('status')}>{SCHEME_STATUS.map((x) => <option key={x} value={x}>{humanize(x)}</option>)}</select></div>
+          <div className="mb-3"><label className="form-label">Scheme Code</label><input className="form-control" value={f.schemeCode} onChange={set('schemeCode')} required /></div>
+          <div className="mb-3"><label className="form-label">Status</label><select className="form-select" value={f.status} onChange={set('status')}>{SCHEME_STATUS.map((x) => <option key={x} value={x}>{humanize(x)}</option>)}</select></div>
         </div>
         <div className="form-row">
-          <div className="field"><label>Category</label><select value={f.category} onChange={set('category')}>{CATEGORIES.map((x) => <option key={x} value={x}>{humanize(x)}</option>)}</select></div>
-          <div className="field"><label>Risk Profile</label><select value={f.riskProfile} onChange={set('riskProfile')}>{RISKS.map((x) => <option key={x} value={x}>{humanize(x)}</option>)}</select></div>
+          <div className="mb-3"><label className="form-label">Category</label><select className="form-select" value={f.category} onChange={set('category')}>{CATEGORIES.map((x) => <option key={x} value={x}>{humanize(x)}</option>)}</select></div>
+          <div className="mb-3"><label className="form-label">Risk Profile</label><select className="form-select" value={f.riskProfile} onChange={set('riskProfile')}>{RISKS.map((x) => <option key={x} value={x}>{humanize(x)}</option>)}</select></div>
         </div>
         <div className="form-row">
-          <div className="field"><label>Benchmark Index</label><input value={f.benchmarkIndex} onChange={set('benchmarkIndex')} /></div>
-          <div className="field"><label>Fund Manager</label><input value={f.fundManagerName} onChange={set('fundManagerName')} /></div>
+          <div className="mb-3"><label className="form-label">Benchmark Index</label><input className="form-control" value={f.benchmarkIndex} onChange={set('benchmarkIndex')} /></div>
+          <div className="mb-3"><label className="form-label">Fund Manager</label><input className="form-control" value={f.fundManagerName} onChange={set('fundManagerName')} /></div>
         </div>
         <div className="form-row">
-          <div className="field"><label>Min Investment (₹)</label><input type="number" value={f.minInvestment} onChange={set('minInvestment')} /></div>
-          <div className="field"><label>Expense Ratio (%)</label><input type="number" step="0.0001" value={f.expenseRatio} onChange={set('expenseRatio')} /></div>
+          <div className="mb-3"><label className="form-label">Min Investment (₹)</label><input className="form-control" type="number" value={f.minInvestment} onChange={set('minInvestment')} /></div>
+          <div className="mb-3"><label className="form-label">Expense Ratio (%)</label><input className="form-control" type="number" step="0.0001" value={f.expenseRatio} onChange={set('expenseRatio')} /></div>
         </div>
-        <div className="field"><label>Exit Load Slab (description)</label><input value={f.exitLoadSlab} onChange={set('exitLoadSlab')} placeholder="1% if redeemed within 365 days" /></div>
+        <div className="mb-3"><label className="form-label">Exit Load Slab (description)</label><input className="form-control" value={f.exitLoadSlab} onChange={set('exitLoadSlab')} placeholder="1% if redeemed within 365 days" /></div>
         <div className="form-row">
-          <div className="field"><label>Exit Load Rate (%)</label><input type="number" step="0.0001" value={f.exitLoadRate} onChange={set('exitLoadRate')} /></div>
-          <div className="field"><label>Exit Load Period (days)</label><input type="number" value={f.exitLoadPeriodDays} onChange={set('exitLoadPeriodDays')} /></div>
+          <div className="mb-3"><label className="form-label">Exit Load Rate (%)</label><input className="form-control" type="number" step="0.0001" value={f.exitLoadRate} onChange={set('exitLoadRate')} /></div>
+          <div className="mb-3"><label className="form-label">Exit Load Period (days)</label><input className="form-control" type="number" value={f.exitLoadPeriodDays} onChange={set('exitLoadPeriodDays')} /></div>
         </div>
       </form>
     </Modal>
@@ -225,8 +225,8 @@ function OptionModal({ scheme, onClose, onDone }) {
       footer={<><button className="btn btn-ghost" onClick={onClose}>Cancel</button>
         <button className="btn btn-primary" form="opt-form" disabled={busy}>{busy ? 'Saving…' : 'Add Option'}</button></>}>
       <form id="opt-form" onSubmit={submit}>
-        <div className="field"><label>Option Type</label><select value={optionType} onChange={(e) => setType(e.target.value)}>{OPTION_TYPES.map((x) => <option key={x} value={x}>{humanize(x)}</option>)}</select></div>
-        <div className="field"><label>ISIN</label><input value={isin} onChange={(e) => setIsin(e.target.value)} placeholder="INF000A0XXXX" /></div>
+        <div className="mb-3"><label className="form-label">Option Type</label><select className="form-select" value={optionType} onChange={(e) => setType(e.target.value)}>{OPTION_TYPES.map((x) => <option key={x} value={x}>{humanize(x)}</option>)}</select></div>
+        <div className="mb-3"><label className="form-label">ISIN</label><input className="form-control" value={isin} onChange={(e) => setIsin(e.target.value)} placeholder="INF000A0XXXX" /></div>
       </form>
     </Modal>
   )

@@ -21,7 +21,7 @@ export default function InvestorKycPage() {
 
   return (
     <>
-      <div className="page-head row-between">
+      <div className="page-head d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
           <h1>KYC Verification</h1>
           <p>Submit your KYC details for verification. Your fund operator reviews and approves them.</p>
@@ -30,12 +30,12 @@ export default function InvestorKycPage() {
       </div>
 
       {isCompliant && <div className="alert alert-success">Your KYC is verified and compliant.</div>}
-      {!isCompliant && isPending && <div className="alert alert-warn">Your KYC has been submitted and is pending verification by the fund operator.</div>}
-      {record ===null && <div className="alert alert-warn">You have not submitted any KYC yet. Submit your details to complete onboarding.</div>}
+      {!isCompliant && isPending && <div className="alert alert-warning">Your KYC has been submitted and is pending verification by the fund operator.</div>}
+      {record ===null && <div className="alert alert-warning">You have not submitted any KYC yet. Submit your details to complete onboarding.</div>}
 
       <Card title="My KYC Record" hint="Verification is performed by Fund Operations / Compliance">
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr><th>KYC Type</th><th>Document Type</th><th>Reference</th><th>Verified On</th><th>Status</th></tr>
             </thead>
@@ -89,21 +89,21 @@ function SubmitKycModal({ documentTypes,types, onClose, onDone }) {
       footer={<><button className="btn btn-ghost" onClick={onClose}>Cancel</button>
         <button className="btn btn-primary" form="kyc-submit-form" disabled={busy}>{busy ? 'Submitting…' : 'Submit for Verification'}</button></>}>
       <form id="kyc-submit-form" onSubmit={submit}>
-        <div className="field">
-          <label>KYC Type</label>
-          <select value={form.kycType} onChange={(e) => setForm({ ...form, kycType: e.target.value })}>
+        <div className="mb-3">
+          <label className="form-label">KYC Type</label>
+          <select className="form-select" value={form.kycType} onChange={(e) => setForm({ ...form, kycType: e.target.value })}>
             {types.map((t) => <option key={t} value={t}>{humanize(t)}</option>)}
           </select>
         </div>
-        <div className="field">
-          <label>Document Type</label>
-          <select value={form.documentType} onChange={(e) => setForm({ ...form, documentType: e.target.value })}>
+        <div className="mb-3">
+          <label className="form-label">Document Type</label>
+          <select className="form-select" value={form.documentType} onChange={(e) => setForm({ ...form, documentType: e.target.value })}>
             {documentTypes.map((t) => <option key={t} value={t}>{humanize(t)}</option>)}
           </select>
         </div>
-        <div className="field">
-          <label>Document Reference / Number</label>
-          <input value={form.documentRef} onChange={(e) => setForm({ ...form, documentRef: e.target.value })} placeholder="e.g. ABCDE1234F" required />
+        <div className="mb-3">
+          <label className="form-label">Document Reference / Number</label>
+          <input className="form-control" value={form.documentRef} onChange={(e) => setForm({ ...form, documentRef: e.target.value })} placeholder="e.g. ABCDE1234F" required />
         </div>
         <p className="muted" style={{ fontSize: 12.5, marginTop: 4 }}>
           Your fund operator will verify these details and update your KYC status. You will be notified once verified.

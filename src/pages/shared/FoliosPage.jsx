@@ -36,7 +36,7 @@ const kycVerified = (kyc?.data?.kycStatus !=="COMPLIANT" && user.role=="INVESTOR
         <p>Create a new folio to start investing in mutual funds.</p>
         </div>
         <Card title="KYC verification required">
-          <div className="alert alert-warn">
+          <div className="alert alert-warning">
             Your KYC is not yet verified. You can place subscriptions, redemptions and switches only
             after your KYC has been verified (COMPLIANT) by the fund operator.
           </div>
@@ -60,7 +60,7 @@ const kycVerified = (kyc?.data?.kycStatus !=="COMPLIANT" && user.role=="INVESTOR
 
   return (
     <>
-      <div className="page-head row-between">
+      <div className="page-head d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
           <h1>{user?.role === 'INVESTOR' ? 'My Folios' : user?.role === 'DISTRIBUTOR' ? 'Client Folios' : 'Folio Manager'}</h1>
           <p>Folios, holdings and lifecycle status</p>
@@ -68,11 +68,11 @@ const kycVerified = (kyc?.data?.kycStatus !=="COMPLIANT" && user.role=="INVESTOR
         {canCreate && <button className="btn btn-primary" onClick={() => setShowCreate(true)}>+ New Folio</button>}
       </div>
 
-      {error && <div className="alert alert-error">{error}</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
 
       <Card>
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr>
                 <th>Folio No.</th>
@@ -97,7 +97,7 @@ const kycVerified = (kyc?.data?.kycStatus !=="COMPLIANT" && user.role=="INVESTOR
                   <td className="num">{inr(f.currentValue)}</td>
                   <td><StatusBadge status={f.status} /></td>
                   <td>
-                    <div className="btn-row">
+                    <div className="d-flex flex-wrap gap-2">
                       <button className="btn btn-ghost btn-sm" onClick={() => setHoldingsFor(f)}>Holdings</button>
                       <button className="btn btn-ghost btn-sm" onClick={() => setTransactionFor(f)}>Transactions</button>
                       <button className="btn btn-ghost btn-sm" onClick={() => setNominnesFor(f?.nomineeDetails)}>Nominee Details</button>
@@ -258,9 +258,10 @@ function CreateFolioModal({ isStaff, onClose, onCreated }) {
     >
       <form id="folio-form" onSubmit={submit}>
         {isStaff && (
-          <div className="field">
-            <label>Investor ID</label>
+          <div className="mb-3">
+            <label className="form-label">Investor ID</label>
             <input
+              className="form-control"
               type="number"
               required
               placeholder="e.g. 7"
@@ -276,9 +277,10 @@ function CreateFolioModal({ isStaff, onClose, onCreated }) {
         )}
 
         <div className="form-row">
-          <div className="field">
-            <label>Tax Status</label>
+          <div className="mb-3">
+            <label className="form-label">Tax Status</label>
             <select
+              className="form-select"
               value={form.taxStatus}
               onChange={(e) =>
                 setForm({
@@ -295,9 +297,10 @@ function CreateFolioModal({ isStaff, onClose, onCreated }) {
             </select>
           </div>
 
-          <div className="field">
-            <label>Mode of Holding</label>
+          <div className="mb-3">
+            <label className="form-label">Mode of Holding</label>
             <select
+              className="form-select"
               value={form.modeOfHolding}
               onChange={(e) =>
                 setForm({
@@ -315,8 +318,8 @@ function CreateFolioModal({ isStaff, onClose, onCreated }) {
           </div>
         </div>
 
-        <div className="field">
-          <label>Nominees</label>
+        <div className="mb-3">
+          <label className="form-label">Nominees</label>
 
           {form.nomineeDetails.map((nominee, index) => (
             <div
@@ -329,6 +332,7 @@ function CreateFolioModal({ isStaff, onClose, onCreated }) {
               }}
             >
               <input
+                className="form-control"
                 type="text"
                 placeholder="Nominee Name"
                 value={nominee.name}
@@ -339,6 +343,7 @@ function CreateFolioModal({ isStaff, onClose, onCreated }) {
               />
 
               <input
+                className="form-control"
                 type="number"
                 min="1"
                 max="100"
@@ -386,9 +391,10 @@ function CreateFolioModal({ isStaff, onClose, onCreated }) {
           </div>
         </div>
 
-        <div className="field">
-          <label>Bank Account Reference</label>
+        <div className="mb-3">
+          <label className="form-label">Bank Account Reference</label>
           <input
+            className="form-control"
             placeholder="Bank - XXXX1234"
             value={form.bankAccountRef}
             onChange={(e) =>
@@ -410,8 +416,8 @@ function HoldingsModal({ folio, onClose }) {
   return (
     <Modal title={`Holdings · ${folio.folioNumber}`} onClose={onClose}>
       {loading ? <PageLoader /> : (
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr><th>Scheme</th><th>Option</th><th className="num">Units</th><th className="num">Value</th><th className="num">P&L</th></tr>
             </thead>
@@ -441,8 +447,8 @@ function TransactionModal({ folio, onClose }) {
   return (
     <Modal title={`Transactions · ${folio.folioNumber}`} onClose={onClose}>
       {loading ? <PageLoader /> : (
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr><th>TXN Ref</th><th>Scheme</th><th>Option</th><th className="num">Units</th><th className="num">Value</th><th className="num">Status</th></tr>
             </thead>
@@ -470,8 +476,8 @@ function TransactionModal({ folio, onClose }) {
 function AllocationModal({ data, onClose }) {
   return (
     <Modal title="Allocation Details" onClose={onClose}>
-      <div className="table-wrap">
-        <table className="tbl">
+      <div className="table-responsive">
+        <table className="table">
           <thead>
             <tr>
               <th>Name</th>

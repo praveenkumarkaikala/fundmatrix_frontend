@@ -53,6 +53,43 @@
   --grad-warm: linear-gradient(135deg, var(--amber-600), var(--fuchsia-500));
   --grad-rail: linear-gradient(165deg, var(--violet-900) 0%, #7e1a8a 55%, var(--fuchsia-600) 100%);
 
+  /* ---------------- Bootstrap theming ----------------
+     This stylesheet loads after bootstrap.min.css, so re-declaring Bootstrap's
+     `--bs-*` variables here maps the design tokens above onto Bootstrap's reset,
+     grid, utilities and components. Bootstrap classes (btn-primary, bg-primary,
+     text-*, etc.) now render in the app's palette/typography, while the custom
+     class names below keep their existing appearance. */
+  --bs-primary: var(--violet-600);
+  --bs-primary-rgb: 124, 58, 237;
+  --bs-secondary: var(--fuchsia-500);
+  --bs-secondary-rgb: 219, 39, 119;
+  --bs-success: var(--green-600);
+  --bs-success-rgb: 22, 163, 74;
+  --bs-info: var(--cyan-600);
+  --bs-info-rgb: 8, 145, 178;
+  --bs-warning: var(--amber-600);
+  --bs-warning-rgb: 217, 119, 6;
+  --bs-danger: var(--rose-600);
+  --bs-danger-rgb: 225, 29, 72;
+  --bs-light: var(--gray-50);
+  --bs-dark: var(--ink);
+
+  --bs-body-bg: var(--gray-50);
+  --bs-body-color: var(--gray-700);
+  --bs-body-color-rgb: 52, 46, 75;
+  --bs-body-font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --bs-emphasis-color: var(--ink);
+
+  --bs-border-color: var(--gray-200);
+  --bs-border-radius: var(--radius-sm);
+  --bs-border-radius-sm: 8px;
+  --bs-border-radius-lg: var(--radius);
+
+  --bs-link-color: var(--violet-600);
+  --bs-link-color-rgb: 124, 58, 237;
+  --bs-link-hover-color: var(--violet-700);
+  --bs-link-hover-color-rgb: 109, 40, 217;
+
 
   /* --grad-primary: #7c3aed; 
 --grad-cool: #2563eb;    
@@ -109,6 +146,26 @@ table.tbl tbody tr:hover { background: var(--violet-100); }
 table.tbl td.num, table.tbl th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .empty { text-align: center; color: var(--gray-400); padding: 34px; font-size: 14px; }
 
+/* Bootstrap-class table: the JSX uses <div class="table-responsive"><table class="table">.
+   These rules reproduce the custom .tbl look and override Bootstrap's per-cell
+   padding/border/box-shadow (its `.table > :not(caption) > * > *` rule). Selectors are
+   given higher specificity (table.table …) so they win over Bootstrap's defaults. */
+.table-responsive { -webkit-overflow-scrolling: touch; }
+table.table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-bottom: 0; color: var(--gray-700); }
+table.table > :not(caption) > * > * {
+  padding: 12px 14px; background-color: transparent; box-shadow: none;
+  border-bottom: 1px solid var(--gray-100); color: var(--gray-700); white-space: nowrap;
+}
+table.table > thead > tr > th {
+  text-align: left; color: var(--gray-500); font-weight: 700; font-size: 11.5px;
+  text-transform: uppercase; letter-spacing: 0.5px; padding: 11px 14px;
+  border-bottom: 2px solid var(--gray-100);
+}
+table.table > tbody > tr { transition: background 0.12s; }
+table.table > tbody > tr:hover > td { background: var(--violet-100); }
+table.table > tbody > tr:last-child > td { border-bottom: none; }
+table.table td.num, table.table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
 /* ---------------- Badges ---------------- */
 .badge {
   display: inline-flex; align-items: center; gap: 5px; padding: 3px 11px; border-radius: 999px;
@@ -154,11 +211,26 @@ table.tbl td.num, table.tbl th.num { text-align: right; font-variant-numeric: ta
 .field .err { color: var(--rose-600); font-size: 12px; margin-top: 5px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
-.alert { padding: 11px 14px; border-radius: 12px; font-size: 13px; margin-bottom: 14px; font-weight: 600; }
-.alert-error { background: var(--rose-100); color: #b3123f; }
+
+/* Bootstrap-class form fields: JSX uses form-label / form-control / form-select.
+   These reproduce the custom .field look (violet focus ring, 1.5px border, 12px radius)
+   and override Bootstrap's form-control defaults. .form-select keeps room for its caret. */
+.form-label { display: block; font-size: 12.5px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px; }
+.form-control, .form-select {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--gray-200); border-radius: 12px;
+  font-size: 14px; color: var(--gray-700); background-color: #fff; font-family: inherit;
+  line-height: 1.4; transition: border 0.15s, box-shadow 0.15s;
+}
+.form-select { padding-right: 34px; }
+.form-control:focus, .form-select:focus {
+  outline: none; border-color: var(--violet-500); box-shadow: 0 0 0 3px rgba(145, 85, 244, 0.18);
+}
+
+.alert { padding: 11px 14px; border: 0; border-radius: 12px; font-size: 13px; margin-bottom: 14px; font-weight: 600; }
+.alert-error, .alert-danger { background: var(--rose-100); color: #b3123f; }
 .alert-info { background: var(--blue-100); color: #1d4bc4; }
 .alert-success { background: var(--green-100); color: #157a3d; }
-.alert-warn { background: var(--amber-100); color: #a1590a; }
+.alert-warn, .alert-warning { background: var(--amber-100); color: #a1590a; }
 
 /* ---------------- Tabs / pills ---------------- */
 .tabs { display: flex; gap: 6px; border-bottom: 2px solid var(--gray-100); margin-bottom: 18px; flex-wrap: wrap; overflow-x: auto; }

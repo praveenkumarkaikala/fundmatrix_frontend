@@ -16,11 +16,11 @@ export default function CommissionsPage() {
         <p>Commission computed on assets under management, by scheme and billing period</p>
       </div>
 
-      {error && <div className="alert alert-error">{error}</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
 
       <Card title="Commission History" hint={`Total paid to date: ${inr(totalPaid)}`}>
-        <div className="table-wrap">
-          <table className="tbl">
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr>
                 <th>Period</th><th>Scheme</th><th className="num">AUM Managed</th>
