@@ -1,5 +1,11 @@
 /* Styles specific to the Toast.jsx notification stack. */
 
+/* Bootstrap ships a .toast component whose `.toast:not(.show){display:none}` (specificity
+   0,2,0) would hide these custom toasts — they carry no `.show` class. Re-assert
+   visibility with a matching-specificity selector (loaded after Bootstrap so it wins the
+   tie) and neutralize Bootstrap's toast width/border so the custom styling shows through. */
+.toast-stack .toast { display: block; width: auto; border: 0; }
+
 .toast-stack { position: fixed; top: 18px; right: 18px; left: 18px; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; z-index: 1000; }
 .toast {
   padding: 13px 19px; border-radius: 12px; color: #fff; font-size: 13.5px; font-weight: 650;
