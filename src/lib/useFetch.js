@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { api, errorMessage } from '../api/client'
 
-/** Minimal GET hook with reload + error handling. Pass null to skip. */
+
 export function useFetch(url) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -33,13 +33,7 @@ export function useFetch(url) {
   return { data, loading, error, reload, setData }
 }
 
-/**
- * fund-catalog-service no longer embeds NAV on scheme options (it would require an N-way
- * fan-out to nav-accounting-service on every catalogue read), so any page that lists scheme
- * options for the user to pick needs to fetch the latest NAV per option separately. Returns
- * a { [optionId]: navValue } map, fetched from nav-accounting-service one call per distinct
- * option. Pass the `schemes` array from a `/schemes` fetch (or null/undefined while loading).
- */
+
 export function useOptionNavMap(schemes) {
   const [navByOption, setNavByOption] = useState({})
 

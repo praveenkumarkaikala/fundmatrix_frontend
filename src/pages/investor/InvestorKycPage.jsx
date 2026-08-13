@@ -12,7 +12,7 @@ export default function InvestorKycPage() {
   const toast = useToast()
   const { data, loading, reload } = useFetch('/kyc/mine')
   const [showSubmit, setShowSubmit] = useState(false)
-
+  const [reSubmit, setReSubmit] = useState(false)
   const record = data ?data: null
   const isCompliant = record?.kycStatus === 'COMPLIANT'
   const isPending = record?.kycStatus==="PENDING"
@@ -26,7 +26,7 @@ export default function InvestorKycPage() {
           <h1>KYC Verification</h1>
           <p>Submit your KYC details for verification. Your fund operator reviews and approves them.</p>
         </div>
-        <button className="btn btn-primary" onClick={() => setShowSubmit(true)}>+ Submit KYC</button>
+        {(!isCompliant && record==null)&& <button className="btn btn-primary" onClick={() => setShowSubmit(true)}>+ Submit KYC</button>}
       </div>
 
       {isCompliant && <div className="alert alert-success">Your KYC is verified and compliant.</div>}
@@ -37,7 +37,7 @@ export default function InvestorKycPage() {
         <div className="table-responsive">
           <table className="table">
             <thead>
-              <tr><th>KYC Type</th><th>Document Type</th><th>Reference</th><th>Verified On</th><th>Status</th></tr>
+              <tr><th>KYC Type</th><th>Document Type</th><th>Reference</th><th>Verified On</th><th>Status</th> {!isCompliant && !isPending && <th>Action</th>}</tr>
             </thead>
             <tbody>
               {record=== null && <EmptyRow colSpan={5} text="No KYC submitted yet." />}
@@ -50,6 +50,7 @@ export default function InvestorKycPage() {
                   <td>{record?.documentRef ?? '—'}</td>
                   <td>{date(record?.verifiedDate)}</td>
                   <td><StatusBadge status={record?.kycStatus} /></td>
+                   {!isCompliant && !isPending && <td> <button className="btn btn-teal btn-sm" onClick={()=> setReSubmit(true)}>ReSubmit</button></td>}
                 </tr>
               )
              }
@@ -59,23 +60,30 @@ export default function InvestorKycPage() {
         </div>
       </Card>
 
-      {showSubmit && <SubmitKycModal documentTypes={DOCUMENTS} types={TYPES} onClose={() => setShowSubmit(false)} onDone={() => { setShowSubmit(false); reload() }} />}
+              {showSubmit && <SubmitKycModal documentTypes={DOCUMENTS} types={TYPES} onClose={() => setShowSubmit(false)} onDone={() => { setShowSubmit(false); reload() }}  data={null}/>}
+              {reSubmit && <SubmitKycModal documentTypes={DOCUMENTS} types={TYPES} onClose={() => setReSubmit(false)} onDone={() => { setReSubmit(false); reload() }}  data={record}/>}
     </>
   )
 }
 
-function SubmitKycModal({ documentTypes,types, onClose, onDone }) {
+function SubmitKycModal({ documentTypes,types, onClose, onDone,data }) {
   const toast = useToast()
-  const [form, setForm] = useState({ kycType: 'FULL', documentType: 'PAN', documentRef: '' })
+  const [form, setForm] = useState({ kycType: data?.kycType || "FULL", documentType: data?.documentType || "PAN", documentRef: data?.documentRef || "" })
   const [busy, setBusy] = useState(false)
 
   async function submit(e) {
     e.preventDefault(); 
     setBusy(true)
     try {
-      await api.post('/kyc', { kycType: form.kycType, documentType: form.documentType, documentRef: form.documentRef })
-      toast.success('KYC submitted — pending verification')
-     
+      if(data)
+      {
+        await api.put (`/kyc/${data.id}`, { kycType: form.kycType, documentType: form.documentType, documentRef: form.documentRef })
+        toast.success('KYC resubmitted — pending verification')
+      }
+      else {
+        await api.post('/kyc', { kycType: form.kycType, documentType: form.documentType, documentRef: form.documentRef })
+        toast.success('KYC submitted — pending verification')
+      }
     } catch (err) { 
       console.log(err.response);
       toast.error(errorMessage(err)) } finally {  

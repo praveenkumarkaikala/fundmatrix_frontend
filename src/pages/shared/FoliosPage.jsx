@@ -15,17 +15,18 @@ export default function FoliosPage() {
   const { user } = useAuth()
   const toast = useToast()
   const { data, loading, error, reload } = useFetch('/folios')
+  const {data:distributors}=useFetch("/distributors")
   const [showCreate, setShowCreate] = useState(false)
   const [holdingsFor, setHoldingsFor] = useState(null)
   const [transactionsFor, setTransactionFor] = useState(null)
-    const [nomineesFor, setNominnesFor] = useState(null)
+  const [nomineesFor, setNominnesFor] = useState(null)
   const kyc = useFetch(user?.role === 'INVESTOR' ? '/kyc/mine' : null)
   const isStaff = user?.role === 'FUND_OPS' || user?.role === 'ADMIN'
   const canCreate = user && ['INVESTOR', 'DISTRIBUTOR', 'FUND_OPS', 'ADMIN'].includes(user.role)
 
 // useEffect(()=>{
-//   console.log("kyc",kyc);
-// },[kyc])
+//   console.log("kyc",distributors);
+// },[distributors])
 
 const kycVerified = (kyc?.data?.kycStatus !=="COMPLIANT" && user.role=="INVESTOR") || false
   if (kycVerified) {
@@ -118,7 +119,7 @@ const kycVerified = (kyc?.data?.kycStatus !=="COMPLIANT" && user.role=="INVESTOR
       </Card>
 
       {showCreate && (
-        <CreateFolioModal isStaff={!!isStaff} onClose={() => setShowCreate(false)} onCreated={() => { setShowCreate(false); reload() }} />
+        <CreateFolioModal isStaff={!!isStaff} onClose={() => setShowCreate(false)} onCreated={() => { setShowCreate(false); reload() }} distributors={distributors} />
       )}
       {holdingsFor && <HoldingsModal folio={holdingsFor} onClose={() => setHoldingsFor(null)} />}
       {transactionsFor && <TransactionModal folio={transactionsFor} onClose={() => setTransactionFor(null)} />}
@@ -130,11 +131,12 @@ const kycVerified = (kyc?.data?.kycStatus !=="COMPLIANT" && user.role=="INVESTOR
 }
 
 
-function CreateFolioModal({ isStaff, onClose, onCreated }) {
+function CreateFolioModal({ isStaff, onClose, onCreated,distributors }) {
   const toast = useToast()
 
   const [form, setForm] = useState({
     investorId: '',
+    distributorId:'',
     taxStatus: 'INDIVIDUAL',
     modeOfHolding: 'SINGLE',
     nomineeDetails: [
@@ -219,6 +221,7 @@ function CreateFolioModal({ isStaff, onClose, onCreated }) {
           name: nominee.name.trim(),
           percentage: Number(nominee.percentage),
         })),
+        distributorId:form?.distributorId || null,
         bankAccountRef: form.bankAccountRef || undefined,
       })
 
@@ -275,7 +278,26 @@ function CreateFolioModal({ isStaff, onClose, onCreated }) {
             />
           </div>
         )}
-
+        <div className="mb-3">
+  <label className="form-label">Distributor</label>
+  <select
+    className="form-select"
+    value={form.distributorId}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        distributorId: e.target.value,
+      })
+    }
+  >
+    <option value="">-- Direct (No Distributor) --</option>
+    {distributors?.map((d) => (
+      <option key={d.id} value={d.userId}>
+        {d.name}
+      </option>
+    ))}
+  </select>
+</div>
         <div className="form-row">
           <div className="mb-3">
             <label className="form-label">Tax Status</label>

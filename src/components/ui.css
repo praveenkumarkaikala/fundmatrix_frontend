@@ -45,7 +45,7 @@
      grid, not a full-screen Bootstrap modal. */
   position: static; display: block; top: auto; left: auto; height: auto; z-index: auto; overflow-x: visible;
   background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
-  width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+  width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto;
 }
 @media (max-width: 560px) {
   .modal-backdrop { padding: 0; align-items: flex-end; }
@@ -58,7 +58,7 @@
 .modal-foot { padding: 16px 22px; border-top: 1.5px solid var(--gray-100); display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
 
 /* ---------------- Loader ---------------- */
-.loader { display: grid; place-items: center; min-height: 60vh; color: var(--gray-400); }
+.loader { display: grid; place-items: center; min-height:15vh; color: var(--gray-400); }
 .spinner {
   width: 36px; height: 36px; border: 3px solid var(--gray-200); border-top-color: var(--fuchsia-500);
   border-radius: 50%; animation: spin 0.8s linear infinite;

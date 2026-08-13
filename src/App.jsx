@@ -48,40 +48,39 @@ export default function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<HomeRedirect />} />
 
-          {/* Investor */}
+         
           <Route path="/investor" element={<RoleRoute allow={['INVESTOR']}><InvestorDashboard /></RoleRoute>} />
           <Route path="/kyc" element={<RoleRoute allow={['INVESTOR']}><InvestorKycPage /></RoleRoute>} />
           <Route path="/dividends" element={<RoleRoute allow={['INVESTOR']}><InvestorDividends /></RoleRoute>} />
 
-          {/* Distributor */}
+        
           <Route path="/distributor" element={<RoleRoute allow={['DISTRIBUTOR']}><DistributorDashboard /></RoleRoute>} />
           <Route path="/distributor/commissions" element={<RoleRoute allow={['DISTRIBUTOR']}><CommissionsPage /></RoleRoute>} />
 
-          {/* Shared operational pages */}
+          
           <Route path="/folios" element={<RoleRoute allow={['INVESTOR', 'DISTRIBUTOR', 'FUND_OPS', 'ADMIN']}><FoliosPage /></RoleRoute>} />
           <Route path="/transact" element={<RoleRoute allow={['INVESTOR', 'DISTRIBUTOR']}><TransactPage /></RoleRoute>} />
           <Route path="/sips" element={<RoleRoute allow={['INVESTOR', 'DISTRIBUTOR', 'FUND_OPS', 'ADMIN']}><SipsPage /></RoleRoute>} />
           <Route path="/swp" element={<RoleRoute allow={['INVESTOR', 'DISTRIBUTOR', 'FUND_OPS', 'ADMIN']}><SwpsPage /></RoleRoute>} />
           <Route path="/statement" element={<RoleRoute allow={['INVESTOR', 'DISTRIBUTOR']}><StatementPage /></RoleRoute>} />
 
-          {/* Fund Operations */}
           <Route path="/ops/queue" element={<RoleRoute allow={['FUND_OPS', 'ADMIN']}><OpsQueuePage /></RoleRoute>} />
           <Route path="/ops/allotments" element={<RoleRoute allow={['FUND_OPS', 'ADMIN']}><AllotmentPage /></RoleRoute>} />
           <Route path="/ops/kyc" element={<RoleRoute allow={['FUND_OPS', 'ADMIN']}><KycPage /></RoleRoute>} />
 
-          {/* Fund Accountant */}
+         
           <Route path="/accountant/nav" element={<RoleRoute allow={['FUND_ACCOUNTANT', 'ADMIN']}><NavPage /></RoleRoute>} />
           <Route path="/accountant/aum" element={<RoleRoute allow={['FUND_ACCOUNTANT', 'ADMIN', 'COMPLIANCE']}><AumPage /></RoleRoute>} />
           <Route path="/accountant/accruals" element={<RoleRoute allow={['FUND_ACCOUNTANT', 'ADMIN']}><AccrualsPage /></RoleRoute>} />
           <Route path="/accountant/dividends" element={<RoleRoute allow={['FUND_ACCOUNTANT', 'ADMIN']}><AccountantDividends /></RoleRoute>} />
 
-          {/* Compliance */}
+         
           <Route path="/compliance" element={<RoleRoute allow={['COMPLIANCE', 'ADMIN']}><ComplianceDashboard /></RoleRoute>} />
           <Route path="/compliance/kyc" element={<RoleRoute allow={['COMPLIANCE', 'FUND_OPS', 'ADMIN']}><KycPage /></RoleRoute>} />
           <Route path="/compliance/flags" element={<RoleRoute allow={['COMPLIANCE', 'ADMIN']}><FlagsPage /></RoleRoute>} />
           <Route path="/compliance/reports" element={<RoleRoute allow={['COMPLIANCE', 'ADMIN']}><ComplianceReportsPage /></RoleRoute>} />
 
-          {/* Admin */}
+        
           <Route path="/admin" element={<RoleRoute allow={['ADMIN']}><AdminDashboard /></RoleRoute>} />
           <Route path="/admin/schemes" element={<RoleRoute allow={['ADMIN']}><SchemesPage /></RoleRoute>} />
           <Route path="/admin/distributors" element={<RoleRoute allow={['ADMIN']}><DistributorsPage /></RoleRoute>} />
