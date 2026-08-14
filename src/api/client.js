@@ -22,7 +22,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Token expired / invalid: drop it and bounce to login (once).
+    
     if (error.response?.status === 401 && getToken()) {
       setToken(null)
       if (!window.location.pathname.startsWith('/login')) {
